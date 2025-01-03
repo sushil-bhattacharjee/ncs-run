@@ -1,0 +1,7 @@
+! ios-stats:voice
+
+<root>
+  <container :: . :: ttl=-1/>
+   <leaf :: register/global/create/profile/sync :: sync (\S+)/>
+  </container>
+</root>

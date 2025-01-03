@@ -1,0 +1,16 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>phased-provisioning</name>
+  <package-version>1.2.0</package-version>
+  <description>Phased Provisioning</description>
+  <ncs-min-version>6.1</ncs-min-version>
+  <python-package>
+    <vm-name>phased-provisioning</vm-name>
+    <callpoint-model>threading</callpoint-model>
+  </python-package>
+  <component>
+    <name>main</name>
+    <application>
+      <python-class-name>phased_provisioning.main.Main</python-class-name>
+    </application>
+  </component>
+</ncs-package>

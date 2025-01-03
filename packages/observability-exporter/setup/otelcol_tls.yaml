@@ -1,0 +1,29 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        tls:
+          cert_file: "/app/server.crt"
+          key_file: "/app/server.key"
+      http:
+        tls:
+          cert_file: "/app/server.crt"
+          key_file: "/app/server.key"
+
+exporters:
+  otlp/jaeger:
+    endpoint: "jaeger-collector:4317"
+    tls:
+      insecure: true
+
+  prometheus:
+    endpoint: "0.0.0.0:9464"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlp/jaeger]
+    metrics:
+      receivers: [otlp]
+      exporters: [prometheus]

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+P=$(dirname $(readlink -f "$0"))
+
+java $TURBOY_JAVA_OPTS -cp $P/../../private-jar/nedcom.jar:$P/../../private-jar/cisco-nanojson-1.2.jar com.tailf.packages.ned.nedcom.Schemas\$turboy "$@"

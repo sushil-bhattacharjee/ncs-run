@@ -1,0 +1,25 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                 servicepoint="ospf">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <router xmlns="urn:ios">
+          <ospf>
+            <id>{/process-id}</id>
+            <router-id>{/router-id}</router-id>
+            <network>
+              <ip>{/network/ip}</ip>
+              <mask>{/network/mask}</mask>
+              <area>{/network/area}</area>
+            </network>
+          </ospf>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>
+
+
+
+

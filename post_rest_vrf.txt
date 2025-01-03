@@ -1,0 +1,26 @@
+http://10.1.10.39:8080/restconf/data/tailf-ncs:devices/device=R1/config/tailf-ned-cisco-ios:vrf/
+
+{
+    "definition": [
+      {
+        "name": "CustomerD",
+        "rd": "65001:49",
+        "address-family": {
+          "ipv4": {
+            "route-target": {
+              "export": [
+                {
+                  "asn-ip": "65001:49"
+                }
+              ],
+              "import": [
+                {
+                  "asn-ip": "65001:49"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }

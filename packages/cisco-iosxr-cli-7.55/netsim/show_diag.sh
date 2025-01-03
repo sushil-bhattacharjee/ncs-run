@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cat <<EOF
+Fri Jun 10 07:09:54.058 UTC
+  S/N:   FOC1830NJQJ
+  S/N:   FOC1235807E
+  S/N:   FOC12278103
+  S/N:   FOC160383AE
+  S/N:   FOC13478134
+EOF

@@ -1,0 +1,33 @@
+observability-exporter 1.3.0
+==================================
+    Fixed error when trying to export NSO metrics with same name
+    Added example documentation to export traces and metrics to Splunk
+    ENG-33893 - Expose OTLP endpoint, service name, headers and option to use TSL configuration
+    ENG-32503 - Setting extra-tags in export config crashing obe process
+    ENG-34146 - Added descriptions to options in ptrace.py script
+    ENG-33891 - Made timestamps Timezone aware when exporting metrics to InfluxDB
+
+observability-exporter 1.2.0
+==================================
+    ENG-32065 - Fix unmatching HA config sync messages
+    ENG-32276 - Place commit-queue items in their own trace-id
+    ENG-31329 - Zero tolerance for ERROR messages in log files
+    ENG-32503 - Fix for broken delete operation for extra-tags subscription and made extra-tags value leaf mandatory
+    ENG-31305 - Added script as an easy way to setup NSO and docker containers needed by OE
+    ENG-31544 - Added support for reading attributes from progress trace CSV
+
+
+observability-exporter 1.1.1
+==================================
+    ENG-32276 - Place commit-queue items in their own trace
+    ENG-32065 - Fixed unmatching HA config sync spans messages
+
+observability-exporter 1.1.0
+==================================
+    Added support for NSO 6.1
+    ENG-30300 - Export NSO Metrics to Prometheus via OTLP Collector
+
+observability-exporter 1.0.0
+==================================
+    Initial Release
+    This packages consumes NSO progress-trace information and using the OpenTelemetry library can export this to the Jaeger tracing system. It can also directly export metrics to an InfluxDB database.

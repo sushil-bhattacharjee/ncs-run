@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+P=$(dirname $(readlink -f "$0"))
+
+if /usr/bin/env python --version > /dev/null 2>&1; then
+    /usr/bin/env python $P/ypp.py "$@"
+elif /usr/bin/env python3 --version > /dev/null 2>&1; then
+    /usr/bin/env python3 $P/ypp.py "$@"
+elif /usr/bin/env python2 --version > /dev/null 2>&1; then
+    /usr/bin/env python2 $P/ypp.py "$@"
+else
+    echo "ypp: No python interpreter found"
+    exit 1
+fi

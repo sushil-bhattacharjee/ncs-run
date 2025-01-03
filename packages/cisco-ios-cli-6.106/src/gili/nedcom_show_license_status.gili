@@ -1,0 +1,41 @@
+! ncs:smart-license
+
+<root>
+  <buf-replace-all :: ENABLED :: true/>
+  <buf-replace-all :: DISABLED :: false/>
+  <container :: smart-license/>
+
+  <leaf :: enabled :: Smart Licensing (?:is|Using Policy:\r\n[ ]+Status:) (\S+)/>
+
+  <buf-push/>
+  <buf-start :: Utility: :: clear/>
+  <container :: utility/>
+   <leaf :: enabled :: Status: (\S+)/>
+  </container>
+  <buf-pop/>
+
+  <buf-push/>
+  <buf-start :: Transport: :: clear/>
+  <container :: transport/>
+   <leaf :: transport-type :: Type: (\S+)/>
+  </container>
+  <buf-pop/>
+
+  <buf-push/>
+  <buf-start :: Registration: :: clear/>
+  <container :: registration/>
+   <leaf :: registration-state :: Status: (\S+)/>
+   <leaf :: smart-account :: Smart Account: (.*)/>
+   <leaf :: virtual-account :: Virtual Account: (.*)/>
+  </container>
+  <buf-pop/>
+
+  <buf-push/>
+  <buf-start :: License Authorization: :: clear/>
+  <container :: authorization/>
+   <leaf :: authorization-state :: Status: (.*)/>
+  </container>
+  <buf-pop/>
+
+  </container>
+</root>

@@ -1,0 +1,1083 @@
+{
+  "tailf-ncs:config": {
+    "tailf-ned-cisco-ios-xr:admin": {
+      "fpd": {
+        "auto-upgrade": {
+          "status": "disable"
+        }
+      },
+      "disk_status_config": {
+        "minor": 80,
+        "severe": 90,
+        "critical": 95
+      },
+      "memory_status_config": {
+        "minor": 80,
+        "severe": 90,
+        "critical": 95,
+        "recovery_enabled": "false"
+      },
+      "aaa": {
+        "admin-accounting": {
+          "enable": false
+        },
+        "authentication": {
+          "users": {
+            "user": [
+              {
+                "name": "sushil",
+                "uid": 9000,
+                "gid": 100,
+                "password": 
+"$6$8Sxtm0LTigb99m0.$R1cbQXBeyFVyylqePkMwkxrHVlYQl7GlGgrrrcDjHDQxqdTQdDyv77awa4E1eWx7FFWzJu5885LVWCH
+u9wdq7.",
+                "ssh_keydir": "/var/confd/homes/sushil/.ssh",
+                "homedir": "/var/confd/homes/sushil"
+              }
+            ]
+          },
+          "groups": {
+            "group": [
+              {
+                "name": "aaa-r",
+                "gid": 100,
+                "users": ["%%__system_user__%%"]
+              },
+              {
+                "name": "admin-r",
+                "gid": 100,
+                "users": ["%%__system_user__%%"]
+              },
+              {
+                "name": "root-system",
+                "gid": 100,
+                "users": ["%%__system_user__%%", "sushil"]
+              }
+            ]
+          }
+        },
+        "authorization": {
+          "cmdrules": [
+            {
+              "cmdrule": 1,
+              "context": "*",
+              "command": "*",
+              "group": "root-system",
+              "ops": "rx",
+              "action": "accept"
+            },
+            {
+              "cmdrule": 2,
+              "context": "*",
+              "command": "show running-config aaa",
+              "group": "aaa-r",
+              "ops": "rx",
+              "action": "accept"
+            },
+            {
+              "cmdrule": 3,
+              "context": "*",
+              "command": "show tech-support aaa",
+              "group": "aaa-r",
+              "ops": "rx",
+              "action": "accept"
+            },
+            {
+              "cmdrule": 4,
+              "context": "*",
+              "command": "show aaa",
+              "group": "aaa-r",
+              "ops": "rx",
+              "action": "accept"
+            },
+            {
+              "cmdrule": 5,
+              "context": "*",
+              "command": "show",
+              "group": "admin-r",
+              "ops": "rx",
+              "action": "accept"
+            }
+          ],
+          "datarules": [
+            {
+              "datarule": 1,
+              "namespace": "*",
+              "context": "*",
+              "keypath": "*",
+              "group": "root-system",
+              "ops": "rwx",
+              "action": "accept"
+            },
+            {
+              "datarule": 2,
+              "namespace": "*",
+              "context": "*",
+              "keypath": "/aaa",
+              "group": "aaa-r",
+              "ops": "r",
+              "action": "accept"
+            },
+            {
+              "datarule": 3,
+              "namespace": "*",
+              "context": "*",
+              "keypath": "/aaa",
+              "group": "admin-r",
+              "ops": "rwx",
+              "action": "reject"
+            },
+            {
+              "datarule": 4,
+              "namespace": "*",
+              "context": "*",
+              "keypath": "/",
+              "group": "admin-r",
+              "ops": "r",
+              "action": "accept"
+            }
+          ]
+        }
+      },
+      "confdConfig": {
+        "cli": {
+          "maxLineLength": 0,
+          "timezone": "local",
+          "utcOffset": 0,
+          "idleTimeout": "10m",
+          "timestamp": {
+            "enabled": ,
+            "clock24": true,
+            "format": "\\d{l,4}\\m{l,5}\\D{l,3}\\H{r,2,0}:\\t{r,2,0}:\\s{r,2,0}.\\c{l,3,0} 
+UTC\\u{l,1}\\o{r,2,0}:\\k{r,2,0}"
+          },
+          "historySave": true,
+          "allOrNothingLoad": false,
+          "enableLoadMergeLeafList": false
+        }
+      },
+      "sdr": [
+        {
+          "name": "default-sdr",
+          "resources": {
+            "card-type": [
+              {
+                "name": "LC",
+                "vm-cpu": 1,
+                "vm-memory": 1
+              },
+              {
+                "name": "RP",
+                "vm-cpu": 1,
+                "vm-memory": 2
+              }
+            ]
+          },
+          "location": [
+            {
+              "name": "all"
+            }
+          ]
+        }
+      ],
+      "service": {
+        "cli": {
+          "interactive": "enabled"
+        }
+      },
+      "vm": {
+        "memory": {
+          "admin": 1,
+          "rp": 10,
+          "lc": 19
+        },
+        "cpu": {
+          "assign": "0-1/2-3"
+        }
+      },
+      "SNMP-COMMUNITY-MIB": {
+        "snmpCommunityTable": {
+          "snmpCommunityEntry": [
+            {
+              "snmpCommunityIndex": "public",
+              "snmpCommunityName": "public",
+              "snmpCommunitySecurityName": "public",
+              "snmpCommunityContextEngineID": "80:00:61:81:05:01",
+              "snmpCommunityContextName": "",
+              "snmpCommunityTransportTag": "",
+              "snmpCommunityStorageType": "permanent"
+            }
+          ]
+        }
+      },
+      "SNMP-NOTIFICATION-MIB": {
+        "snmpNotifyTable": {
+          "snmpNotifyEntry": [
+            {
+              "snmpNotifyName": "std_v1_trap",
+              "snmpNotifyTag": "std_v1_trap",
+              "snmpNotifyType": "trap",
+              "snmpNotifyStorageType": "nonVolatile"
+            },
+            {
+              "snmpNotifyName": "std_v2_inform",
+              "snmpNotifyTag": "std_v2_inform",
+              "snmpNotifyType": "inform",
+              "snmpNotifyStorageType": "nonVolatile"
+            },
+            {
+              "snmpNotifyName": "std_v2_trap",
+              "snmpNotifyTag": "std_v2_trap",
+              "snmpNotifyType": "trap",
+              "snmpNotifyStorageType": "nonVolatile"
+            },
+            {
+              "snmpNotifyName": "std_v3_inform",
+              "snmpNotifyTag": "std_v3_inform",
+              "snmpNotifyType": "inform",
+              "snmpNotifyStorageType": "nonVolatile"
+            },
+            {
+              "snmpNotifyName": "std_v3_trap",
+              "snmpNotifyTag": "std_v3_trap",
+              "snmpNotifyType": "trap",
+              "snmpNotifyStorageType": "nonVolatile"
+            }
+          ]
+        }
+      },
+      "SNMP-TARGET-MIB": {
+        "snmpTargetAddrTable": {
+          "snmpTargetAddrEntry": [
+            {
+              "snmpTargetAddrName": "127.0.0.1 v1",
+              "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
+              "snmpTargetAddrTAddress": "127.0.0.1.19.136",
+              "snmpTargetAddrTimeout": 1500,
+              "snmpTargetAddrRetryCount": 3,
+              "snmpTargetAddrTagList": "std_v1_trap std_trap std_v1_inform std_inform",
+              "snmpTargetAddrParams": "target_v1",
+              "snmpTargetAddrStorageType": "nonVolatile",
+              "snmpTargetAddrEngineID": "",
+              "snmpTargetAddrTMask": "",
+              "snmpTargetAddrMMS": 2048,
+              "enabled": 
+            },
+            {
+              "snmpTargetAddrName": "127.0.0.1 v2",
+              "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
+              "snmpTargetAddrTAddress": "127.0.0.1.23.112",
+              "snmpTargetAddrTimeout": 1500,
+              "snmpTargetAddrRetryCount": 3,
+              "snmpTargetAddrTagList": "std_v2_trap std_trap std_v2_inform std_inform",
+              "snmpTargetAddrParams": "target_v2",
+              "snmpTargetAddrStorageType": "nonVolatile",
+              "snmpTargetAddrEngineID": "",
+              "snmpTargetAddrTMask": "",
+              "snmpTargetAddrMMS": 2048,
+              "enabled": 
+            },
+            {
+              "snmpTargetAddrName": "127.0.0.1 v3",
+              "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
+              "snmpTargetAddrTAddress": "127.0.0.1.27.88",
+              "snmpTargetAddrTimeout": 1500,
+              "snmpTargetAddrRetryCount": 3,
+              "snmpTargetAddrTagList": "std_v3_trap std_trap",
+              "snmpTargetAddrParams": "trap_target_v3",
+              "snmpTargetAddrStorageType": "nonVolatile",
+              "snmpTargetAddrEngineID": "",
+              "snmpTargetAddrTMask": "",
+              "snmpTargetAddrMMS": 2048,
+              "enabled": 
+            },
+            {
+              "snmpTargetAddrName": "127.0.0.1 v3.inform",
+              "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
+              "snmpTargetAddrTAddress": "127.0.0.1.27.88",
+              "snmpTargetAddrTimeout": 1500,
+              "snmpTargetAddrRetryCount": 3,
+              "snmpTargetAddrTagList": "std_v3_inform std_inform",
+              "snmpTargetAddrParams": "inform_target_v3",
+              "snmpTargetAddrStorageType": "nonVolatile",
+              "snmpTargetAddrEngineID": "80:00:1f:88:04:74:65:73:74:69:6e:67",
+              "snmpTargetAddrTMask": "",
+              "snmpTargetAddrMMS": 2048,
+              "enabled": 
+            }
+          ]
+        },
+        "snmpTargetParamsTable": {
+          "snmpTargetParamsEntry": [
+            {
+              "snmpTargetParamsName": "inform_target_v3",
+              "snmpTargetParamsMPModel": 3,
+              "snmpTargetParamsSecurityModel": 3,
+              "snmpTargetParamsSecurityName": "remote",
+              "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
+              "snmpTargetParamsStorageType": "nonVolatile"
+            },
+            {
+              "snmpTargetParamsName": "target_v1",
+              "snmpTargetParamsMPModel": 0,
+              "snmpTargetParamsSecurityModel": 1,
+              "snmpTargetParamsSecurityName": "public",
+              "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
+              "snmpTargetParamsStorageType": "nonVolatile"
+            },
+            {
+              "snmpTargetParamsName": "target_v2",
+              "snmpTargetParamsMPModel": 1,
+              "snmpTargetParamsSecurityModel": 2,
+              "snmpTargetParamsSecurityName": "public",
+              "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
+              "snmpTargetParamsStorageType": "nonVolatile"
+            },
+            {
+              "snmpTargetParamsName": "trap_target_v3",
+              "snmpTargetParamsMPModel": 3,
+              "snmpTargetParamsSecurityModel": 3,
+              "snmpTargetParamsSecurityName": "public",
+              "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
+              "snmpTargetParamsStorageType": "nonVolatile"
+            }
+          ]
+        }
+      },
+      "SNMP-USER-BASED-SM-MIB": {
+        "usmUserTable": {
+          "usmUserEntry": [
+            {
+              "usmUserEngineID": "80:00:61:81:05:01",
+              "usmUserName": "initial",
+              "usmUserSecurityName": "initial",
+              "usmUserAuthProtocol": "1.3.6.1.6.3.10.1.1.1",
+              "usmUserPrivProtocol": "1.3.6.1.6.3.10.1.2.1",
+              "usmUserStorageType": "nonVolatile"
+            },
+            {
+              "usmUserEngineID": "80:00:61:81:05:01",
+              "usmUserName": "initial_auth",
+              "usmUserSecurityName": "initial_auth",
+              "usmUserAuthProtocol": "1.3.6.1.6.3.10.1.1.2",
+              "usmUserPrivProtocol": "1.3.6.1.6.3.10.1.2.1",
+              "usmUserStorageType": "nonVolatile",
+              "usmUserAuthKey": "10:2c:bd:65:e3:eb:e2:16:0d:63:db:23:73:f3:17:b2"
+            },
+            {
+              "usmUserEngineID": "80:00:61:81:05:01",
+              "usmUserName": "initial_authPriv",
+              "usmUserSecurityName": "initial_authPriv",
+              "usmUserAuthProtocol": "1.3.6.1.6.3.10.1.1.2",
+              "usmUserPrivProtocol": "1.3.6.1.6.3.10.1.2.2",
+              "usmUserStorageType": "nonVolatile",
+              "usmUserAuthKey": "10:2c:bd:65:e3:eb:e2:16:0d:63:db:23:73:f3:17:b2",
+              "usmUserPrivKey": "10:2c:bd:65:e3:eb:e2:16:0d:63:db:23:73:f3:17:b2"
+            }
+          ]
+        }
+      },
+      "SNMP-VIEW-BASED-ACM-MIB": {
+        "vacmSecurityToGroupTable": {
+          "vacmSecurityToGroupEntry": [
+            {
+              "vacmSecurityModel": 1,
+              "vacmSecurityName": "public",
+              "vacmGroupName": "all-rights",
+              "vacmSecurityToGroupStorageType": "nonVolatile"
+            },
+            {
+              "vacmSecurityModel": 2,
+              "vacmSecurityName": "public",
+              "vacmGroupName": "all-rights",
+              "vacmSecurityToGroupStorageType": "nonVolatile"
+            },
+            {
+              "vacmSecurityModel": 3,
+              "vacmSecurityName": "initial",
+              "vacmGroupName": "initial",
+              "vacmSecurityToGroupStorageType": "nonVolatile"
+            },
+            {
+              "vacmSecurityModel": 3,
+              "vacmSecurityName": "initial_auth",
+              "vacmGroupName": "initial",
+              "vacmSecurityToGroupStorageType": "nonVolatile"
+            },
+            {
+              "vacmSecurityModel": 3,
+              "vacmSecurityName": "initial_authPriv",
+              "vacmGroupName": "initial",
+              "vacmSecurityToGroupStorageType": "nonVolatile"
+            }
+          ]
+        },
+        "vacmAccessTable": {
+          "vacmAccessEntry": [
+            {
+              "vacmGroupName": "initial",
+              "vacmAccessContextPrefix": "",
+              "vacmAccessSecurityModel": 3,
+              "vacmAccessSecurityLevel": "noAuthNoPriv",
+              "vacmAccessContextMatch": "exact",
+              "vacmAccessReadViewName": "internet",
+              "vacmAccessWriteViewName": "internet",
+              "vacmAccessNotifyViewName": "internet",
+              "vacmAccessStorageType": "nonVolatile"
+            },
+            {
+              "vacmGroupName": "initial",
+              "vacmAccessContextPrefix": "",
+              "vacmAccessSecurityModel": 3,
+              "vacmAccessSecurityLevel": "authNoPriv",
+              "vacmAccessContextMatch": "exact",
+              "vacmAccessReadViewName": "internet",
+              "vacmAccessWriteViewName": "internet",
+              "vacmAccessNotifyViewName": "internet",
+              "vacmAccessStorageType": "nonVolatile"
+            },
+            {
+              "vacmGroupName": "initial",
+              "vacmAccessContextPrefix": "",
+              "vacmAccessSecurityModel": 3,
+              "vacmAccessSecurityLevel": "authPriv",
+              "vacmAccessContextMatch": "exact",
+              "vacmAccessReadViewName": "internet",
+              "vacmAccessWriteViewName": "internet",
+              "vacmAccessNotifyViewName": "internet",
+              "vacmAccessStorageType": "nonVolatile"
+            },
+            {
+              "vacmGroupName": "all-rights",
+              "vacmAccessContextPrefix": "",
+              "vacmAccessSecurityModel": 0,
+              "vacmAccessSecurityLevel": "noAuthNoPriv",
+              "vacmAccessContextMatch": "exact",
+              "vacmAccessReadViewName": "internet",
+              "vacmAccessWriteViewName": "internet",
+              "vacmAccessNotifyViewName": "internet",
+              "vacmAccessStorageType": "nonVolatile"
+            }
+          ]
+        },
+        "vacmViewTreeFamilyTable": {
+          "vacmViewTreeFamilyEntry": [
+            {
+              "vacmViewTreeFamilyViewName": "internet",
+              "vacmViewTreeFamilySubtree": "1.3.6.1",
+              "vacmViewTreeFamilyMask": "",
+              "vacmViewTreeFamilyType": "included",
+              "vacmViewTreeFamilyStorageType": "nonVolatile"
+            }
+          ]
+        }
+      },
+      "SNMPv2-MIB": {
+        "system": {
+          "sysContact": "",
+          "sysName": "",
+          "sysLocation": ""
+        },
+        "snmp": {
+          "snmpEnableAuthenTraps": "disabled"
+        }
+      }
+    },
+    "tailf-ned-cisco-ios-xr:hostname": "XRv779K3",
+    "tailf-ned-cisco-ios-xr:clock": {
+      "timezone": {
+        "zone": "AEST",
+        "region": "Australia/Sydney"
+      }
+    },
+    "tailf-ned-cisco-ios-xr:vrf": {
+      "vrf-list": [
+        {
+          "name": "CustomerA",
+          "rd": "65010:10",
+          "address-family": {
+            "ipv4": {
+              "unicast": {
+                "import": {
+                  "route-target": {
+                    "address-list": [
+                      {
+                        "name": "65010:10"
+                      }
+                    ]
+                  }
+                },
+                "export": {
+                  "route-target": {
+                    "address-list": [
+                      {
+                        "name": "65010:10"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "CustomerB",
+          "rd": "65000:20",
+          "address-family": {
+            "ipv4": {
+              "unicast": {
+                "import": {
+                  "route-target": {
+                    "address-list": [
+                      {
+                        "name": "65000:20"
+                      }
+                    ]
+                  }
+                },
+                "export": {
+                  "route-target": {
+                    "address-list": [
+                      {
+                        "name": "65000:20"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "CustomerC",
+          "description": "Configured by Yangsuite",
+          "rd": "65010:30",
+          "address-family": {
+            "ipv4": {
+              "unicast": {
+              }
+            }
+          }
+        },
+        {
+          "name": "CustomerD",
+          "rd": "65000:40"
+        },
+        {
+          "name": "Mgmt-intf",
+          "address-family": {
+            "ipv4": {
+              "unicast": {
+              }
+            }
+          }
+        }
+      ]
+    },
+    "tailf-ned-cisco-ios-xr:logging": {
+      "console": "warning"
+    },
+    "tailf-ned-cisco-ios-xr:domain": {
+      "lookup": {
+        "disable": 
+      },
+      "name": "sushil.com"
+    },
+    "tailf-ned-cisco-ios-xr:xnetconf": {
+      "agent": {
+        "tty": {
+        }
+      }
+    },
+    "tailf-ned-cisco-ios-xr:netconf-yang": {
+      "agent": {
+        "ssh": 
+      }
+    },
+    "tailf-ned-cisco-ios-xr:ntp": {
+      "server": {
+        "server-list": [
+          {
+            "name": "10.1.10.101"
+          }
+        ]
+      }
+    },
+    "tailf-ned-cisco-ios-xr:tftp": {
+      "client": {
+        "source-interface": {
+          "MgmtEth": "0/RP0/CPU0/0"
+        }
+      }
+    },
+    "tailf-ned-cisco-ios-xr:username": [
+      {
+        "name": "admin",
+        "group": [
+          {
+            "name": "cisco-support"
+          },
+          {
+            "name": "root-lr"
+          }
+        ],
+        "secret": {
+          "encryption": "10",
+          "password": 
+"$6$nGBNtIHKCYZ1t...$thb8mMHocSxn5sBXR9ftX6apjdw6Nf/15Jx4zZ6Gm2dnUlOFygauZ9lAFRlQS9X2Vh7CcnoZPz1UDVP
+nmGRA//"
+        }
+      },
+      {
+        "name": "cisco",
+        "group": [
+          {
+            "name": "cisco-support"
+          },
+          {
+            "name": "root-lr"
+          }
+        ],
+        "secret": {
+          "encryption": "10",
+          "password": 
+"$6$DDJ6h1H3GvVoCh1.$9akecMYFlINbYfxQSKu8nt4svRLkuuuEduHyR2Fk6bBcDsAN1eCoIN5sV58GMrXcnDS8S1IsX1ZkTBI
+bmi.4u."
+        }
+      },
+      {
+        "name": "sushil",
+        "group": [
+          {
+            "name": "cisco-support"
+          },
+          {
+            "name": "root-lr"
+          }
+        ],
+        "secret": {
+          "encryption": "10",
+          "password": 
+"$6$8Sxtm0LTigb99m0.$R1cbQXBeyFVyylqePkMwkxrHVlYQl7GlGgrrrcDjHDQxqdTQdDyv77awa4E1eWx7FFWzJu5885LVWCH
+u9wdq7."
+        }
+      }
+    ],
+    "tailf-ned-cisco-ios-xr:cdp": {
+    },
+    "tailf-ned-cisco-ios-xr:line": {
+      "console": {
+        "exec-timeout": {
+          "minutes": 0,
+          "seconds": 0
+        }
+      },
+      "default": {
+        "transport": {
+          "input": ["all"]
+        },
+        "exec-timeout": {
+          "minutes": 0,
+          "seconds": 0
+        }
+      }
+    },
+    "tailf-ned-cisco-ios-xr:ssh": {
+      "server": {
+        "netconf": {
+          "vrf": [
+            {
+              "name": "Mgmt-intf"
+            },
+            {
+              "name": "default"
+            }
+          ]
+        },
+        "v2": ,
+        "vrf": [
+          {
+            "name": "Mgmt-intf"
+          },
+          {
+            "name": "default"
+          }
+        ]
+      }
+    },
+    "tailf-ned-cisco-ios-xr:interface": {
+      "Loopback": [
+        {
+          "id": 0,
+          "description": "configured by Netmiko",
+          "ipv4": {
+            "address": {
+              "ip": "10.10.10.10",
+              "mask": "255.255.255.255"
+            }
+          }
+        },
+        {
+          "id": 101,
+          "description": "Created by NSO loopback template",
+          "ipv4": {
+            "address": {
+              "ip": "101.101.101.101",
+              "mask": "255.255.255.255"
+            }
+          }
+        },
+        {
+          "id": 110,
+          "description": "Created by NSO loopback template",
+          "ipv4": {
+            "address": {
+              "ip": "110.110.110.110",
+              "mask": "255.255.255.255"
+            }
+          }
+        }
+      ],
+      "MgmtEth": [
+        {
+          "id": "0/RP0/CPU0/0",
+          "vrf": "Mgmt-intf"
+        }
+      ],
+      "GigabitEthernet": [
+        {
+          "id": "0/0/0/0",
+          "description": "configured by Netmiko",
+          "vrf": "Mgmt-intf"
+        },
+        {
+          "id": "0/0/0/1",
+          "description": "Connect to SW for Management Interface",
+          "vrf": "Mgmt-intf",
+          "ipv4": {
+            "address": {
+              "ip": "10.1.10.80",
+              "mask": "255.255.255.0"
+            }
+          }
+        },
+        {
+          "id": "0/0/0/2",
+          "vrf": "CustomerA",
+          "ipv4": {
+            "address": {
+              "ip": "192.168.201.80",
+              "mask": "255.255.255.0"
+            }
+          }
+        },
+        {
+          "id": "0/0/0/3",
+          "vrf": "CustomerB",
+          "ipv4": {
+            "address": {
+              "ip": "192.168.202.80",
+              "mask": "255.255.255.0"
+            }
+          },
+          "shutdown": 
+        },
+        {
+          "id": "0/0/0/4",
+          "description": "configured by Netmiko",
+          "vrf": "CustomerD",
+          "shutdown": 
+        },
+        {
+          "id": "0/0/0/5",
+          "shutdown": 
+        },
+        {
+          "id": "0/0/0/6",
+          "shutdown": 
+        },
+        {
+          "id": "0/0/0/7",
+          "shutdown": 
+        }
+      ]
+    },
+    "tailf-ned-cisco-ios-xr:router": {
+      "isis": {
+        "tag": [
+          {
+            "name": "1",
+            "net": [
+              {
+                "id": "49.0010.0100.1001.00"
+              }
+            ]
+          }
+        ]
+      },
+      "ospf": [
+        {
+          "name": "10",
+          "vrf": [
+            {
+              "name": "CustomerA",
+              "redistribute": {
+                "bgp": [
+                  {
+                    "id": "65010"
+                  }
+                ]
+              },
+              "area": [
+                {
+                  "id": 0,
+                  "interface": [
+                    {
+                      "name": "GigabitEthernet0/0/0/2"
+                    }
+                  ]
+                }
+              ],
+              "address-family": {
+                "ipv4": {
+                  "unicast": 
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "20",
+          "router-id": "192.168.202.80",
+          "area": [
+            {
+              "id": 0,
+              "interface": [
+                {
+                  "name": "GigabitEthernet0/0/0/3"
+                }
+              ]
+            }
+          ],
+          "address-family": {
+            "ipv4": {
+            }
+          }
+        }
+      ],
+      "bgp": {
+        "bgp-no-instance": [
+          {
+            "id": 65010,
+            "bgp": {
+              "router-id": "10.10.10.10"
+            },
+            "address-family": {
+              "ipv4": {
+                "unicast": {
+                }
+              },
+              "vpnv4": {
+                "unicast": {
+                }
+              }
+            },
+            "neighbor": [
+              {
+                "id": "10.12.12.12",
+                "remote-as": 65009,
+                "update-source": {
+                  "Loopback": 0
+                }
+              }
+            ],
+            "vrf": [
+              {
+                "name": "CustomerA",
+                "address-family": {
+                  "ipv4": {
+                    "unicast": {
+                      "redistribute": {
+                        "connected": {
+                        },
+                        "ospf": [
+                          {
+                            "id": "10"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "name": "CustomerB",
+                "address-family": {
+                  "ipv4": {
+                    "unicast": {
+                      "redistribute": {
+                        "connected": {
+                        },
+                        "ospf": [
+                          {
+                            "id": "20"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tailf-ned-cisco-ios-xr:mpls": {
+      "ldp": {
+        "interface": [
+          {
+            "name": "GigabitEthernet0/0/0/2"
+          },
+          {
+            "name": "GigabitEthernet0/0/0/3"
+          }
+        ]
+      },
+      "oam": {
+      }
+    },
+    "tailf-ned-cisco-ios-xr:call-home": {
+      "service": {
+        "active": 
+      },
+      "contact": {
+        "smart-licensing": 
+      },
+      "profile": [
+        {
+          "name": "CiscoTAC-1",
+          "active": ,
+          "destination": {
+            "transport-method": {
+              "email-disable": {
+                "email": {
+                  "disable": 
+                }
+              },
+              "http": 
+            }
+          }
+        }
+      ]
+    },
+    "tailf-ned-cisco-ios-xr:xyzroot": 0,
+    "ietf-yang-library:yang-library": {
+      "module-set": [
+        {
+          "name": "common",
+          "module": [
+            {
+              "name": "ietf-interfaces",
+              "revision": "2014-05-08",
+              "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces",
+              "feature": ["arbitrary-names", "if-mib", "pre-provisioning"]
+            },
+            {
+              "name": "ietf-ip",
+              "revision": "2014-06-16",
+              "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip",
+              "feature": ["ipv4-non-contiguous-netmasks", "ipv6-privacy-autoconf"]
+            },
+            {
+              "name": "tailf-ned-cisco-ios-xr",
+              "revision": "2024-04-26",
+              "namespace": "http://tail-f.com/ned/cisco-ios-xr"
+            },
+            {
+              "name": "tailf-ned-cisco-ios-xr-stats",
+              "namespace": "http://tail-f.com/ned/cisco-ios-xr-stats"
+            }
+          ],
+          "import-only-module": [
+            {
+              "name": "cliparser-extensions-v11",
+              "revision": "",
+              "namespace": "http://tail-f.com/ned/cliparser_v11"
+            },
+            {
+              "name": "tailf-ned-cisco-ios-xr-id",
+              "revision": "",
+              "namespace": "http://tail-f.com/ned/cisco-ios-xr-id"
+            }
+          ]
+        }
+      ],
+      "schema": [
+        {
+          "name": "common",
+          "module-set": ["common"]
+        }
+      ],
+      "datastore": [
+        {
+          "name": "ietf-datastores:running",
+          "schema": "common"
+        },
+        {
+          "name": "ietf-datastores:intended",
+          "schema": "common"
+        },
+        {
+          "name": "ietf-datastores:operational",
+          "schema": "common"
+        }
+      ],
+      "content-id": "c5faf799b56d506bd65d2a75324b5fd4"
+    },
+    "ietf-yang-library:modules-state": {
+      "module-set-id": "c5faf799b56d506bd65d2a75324b5fd4",
+      "module": [
+        {
+          "name": "cliparser-extensions-v11",
+          "revision": "",
+          "namespace": "http://tail-f.com/ned/cliparser_v11",
+          "conformance-type": "import"
+        },
+        {
+          "name": "ietf-interfaces",
+          "revision": "2014-05-08",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-interfaces",
+          "feature": ["arbitrary-names", "if-mib", "pre-provisioning"],
+          "conformance-type": "implement"
+        },
+        {
+          "name": "ietf-ip",
+          "revision": "2014-06-16",
+          "namespace": "urn:ietf:params:xml:ns:yang:ietf-ip",
+          "feature": ["ipv4-non-contiguous-netmasks", "ipv6-privacy-autoconf"],
+          "conformance-type": "implement"
+        },
+        {
+          "name": "tailf-ned-cisco-ios-xr",
+          "revision": "2024-04-26",
+          "namespace": "http://tail-f.com/ned/cisco-ios-xr",
+          "conformance-type": "implement"
+        },
+        {
+          "name": "tailf-ned-cisco-ios-xr-id",
+          "revision": "",
+          "namespace": "http://tail-f.com/ned/cisco-ios-xr-id",
+          "conformance-type": "import"
+        },
+        {
+          "name": "tailf-ned-cisco-ios-xr-stats",
+          "revision": "",
+          "namespace": "http://tail-f.com/ned/cisco-ios-xr-stats",
+          "conformance-type": "implement"
+        }
+      ]
+    }
+  }
+}
+

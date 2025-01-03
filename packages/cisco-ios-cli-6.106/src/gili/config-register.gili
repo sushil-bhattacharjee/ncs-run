@@ -1,0 +1,11 @@
+! ios-stats:config-register
+
+<root>
+ <container :: . :: ttl=-1/>
+  <leaf :: config-register :: Configuration register is (\S+) :: ttl=-1/>
+  <leaf :: next-config-register :: will be (\S+) at next reload :: ttl=-1/>
+  <buf-start :: Standby  :: clear/>
+  <leaf :: standby/config-register :: Configuration register is (\S+) :: ttl=-1/>
+  <leaf :: standby/next-config-register :: will be (\S+) at next reload :: ttl=-1/>
+ </container>
+</root>

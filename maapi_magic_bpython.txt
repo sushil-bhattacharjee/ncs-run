@@ -1,0 +1,57 @@
+sushil@Sushil-Ubuntu:~/ncs-run$ bpython
+bpython version 0.24 on top of Python 3.11.6 /home/sushil/Xpathlab/.venv/bin/python3
+>>> import ncs.maagic as maagic
+>>> import ncs.maapi as maapi
+>>> m =maapi.Maapi()
+>>> m.start_user_session('admin', 'python')
+>>> trans = m.start_write_trans()
+>>> root =  maagic.get_root(trans)
+>>> R1 = root.ncs__devices.device['R1']
+>>> R1.sync_from
+Action name=sync-from tag=41351320
+>>> for loopback in R1.config.ios__interface.Loopback:
+...     print(loopback.name)
+...     print(loopback.description)
+...     
+... 
+0
+None
+10
+None
+
+>>> CSR1K17031 = root.ncs__devices.device['CSR1K17031R6']
+>>> CSR1K17031.sync_from
+Action name=sync-from tag=41351320
+>>> for loopback in CSR1K17031.config.ios__interface.Loopback:
+...     print (loopback.name)
+...     print(loopback.description)
+...     
+... 
+0
+None
+100
+None
+200
+Created by NSO Service Template
+
+
+########################### XR ###############
+import ncs.maapi as maapi
+import ncs.maagic as maagic
+m = maapi.Maapi()
+m.start_user_session('admin','python')
+trans = m.start_write_trans()
+root = maagic.get_root(trans)
+XRv779K3 = root.ncs__devices.device['XRv779K3']
+for loopback in XRv779K3.config.cisco_ios_xr__interface.Loopback:
+     print(loopback.id)
+     print(loopback.description)
+     
+ 
+0
+configured by Netmiko
+101
+Created by NSO loopback template
+110
+Created by NSO loopback template
+>>> 

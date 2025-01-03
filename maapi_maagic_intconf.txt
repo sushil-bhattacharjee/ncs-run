@@ -1,0 +1,34 @@
+import ncs.maagic as maagic
+import ncs
+with ncs.maapi.single_write_trans('admin','python') as trans:
+     root = maagic.get_root(trans)
+     device = root.devices.device['R1']
+     interface = device.config.ios__interface.GigabitEthernet['1']
+     interface.description = "Configured by ncs of NSO"
+     trans.apply()
+...     
+... 
+>>> 
+
+### XR interface description add ##
+
+import ncs
+with ncs.maapi.single_write_trans('admin','python') as trans:
+    root = ncs.maagic.get_root(trans)
+    device = root.ncs__devices.device['XRv779K3']
+    interface = device.config.cisco_ios_xr__interface.GigabitEthernet['0/0/0/5']
+    interface.description = "Created by ncs of NSO"
+    trans.apply()
+
+
+### XR interface ip add ##
+
+import ncs
+with ncs.maapi.single_write_trans('admin','python') as trans:
+    root = ncs.maagic.get_root(trans)
+    device = root.ncs__devices.device['XRv779K3']
+    interface = device.config.cisco_ios_xr__interface.GigabitEthernet['0/0/0/5']
+    interface.ipv4.address.ip = "192.168.105.5"
+    interface.ipv4.address.mask = "255.255.255.0"
+    trans.apply()
+     
