@@ -15,6 +15,9 @@ response_snmp = requests.get('http://10.1.10.99:9280/restconf/data/tailf-ncs:dev
 # Print the response to console
 # print(response.text)
 print(response_snmp.text)
+# Print response headers
+print("Response Headers:")
+print(json.dumps(dict(response.headers), indent=4))
 
 # # Save the response to a JSON file
 # try:
