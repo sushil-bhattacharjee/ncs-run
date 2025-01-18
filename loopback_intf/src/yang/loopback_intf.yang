@@ -1,0 +1,36 @@
+module loopback_intf {
+  namespace "http://com/example/loopback_intf";
+  prefix loopback_intf;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  augment /ncs:services {
+  list loopback_intf {
+    key name;
+
+    uses ncs:service-data;
+    ncs:servicepoint "loopback_intf";
+
+    leaf name {
+      type string;
+    }
+
+    // may replace this with other ways of refering to the devices.
+    leaf-list device {
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    // replace with your own stuff here
+    leaf dummy {
+      type inet:ipv4-address;
+    }
+  }
+  } // augment /ncs:services {
+}

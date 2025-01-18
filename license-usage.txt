@@ -1,0 +1,25 @@
+devices device R1 live-status exec show
+    result 
+License Authorization: 
+  Status: No Licenses in Use
+
+
+R1#
+devices device R2 live-status exec show
+    result 
+License Authorization: 
+  Status: No Licenses in Use
+
+
+R2#
+devices device R4 live-status exec show
+    result 
+
+R4#
+devices device R6 live-status exec show
+    result 
+License Authorization: 
+  Status: No Licenses in Use
+
+
+R6#

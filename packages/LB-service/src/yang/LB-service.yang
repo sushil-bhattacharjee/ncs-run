@@ -1,0 +1,57 @@
+module LB-service {
+  namespace "http://com/example/LBservice";
+  prefix LB-service;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+
+  augment /ncs:services {
+    list LB-service {
+      key name;
+
+      uses ncs:service-data;
+      ncs:servicepoint "LB-service";
+
+      leaf name {
+        type string;
+        tailf:info "Service Instance Name";
+      }
+
+      leaf device {
+        tailf:info "Router name";
+        mandatory true;
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+      }
+
+      leaf loopback-intf {
+        tailf:info "Loopback Interface Number from 0 to 1199";
+        mandatory true;
+        type uint32 {
+          range "0..1199";
+        }
+        description "The loopback number for the service.";
+      }
+
+      leaf ipv4-address {
+        tailf:info "Any valid IPv4 address";
+        mandatory true;
+        type inet:ipv4-address;
+      }
+
+      leaf mask {
+        tailf:info "Any valid IPv4 address mask";
+        mandatory true;
+        type inet:ipv4-address;
+      }
+    }
+  }
+}

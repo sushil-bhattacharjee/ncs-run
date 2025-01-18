@@ -1,0 +1,30 @@
+---
+- name: "Get software version from devices"
+  hosts: R1
+  gather_facts: no
+  tasks:
+    - name: DISPLAY DEVICE INCLUDING OPERATIONAL DATA
+      cisco.nso.nso_show:
+        url: http://10.1.10.99:9280/jsonrpc
+        username: admin
+        password: admin
+        path: /ncs:devices/device{R1}
+        operational: true
+      register: result
+
+    - name: Display the result
+      debug:
+        var: result
+
+    - name: DISPLAY INTERFACES
+      cisco.nso.nso_show:
+        url: "http://10.1.10.99:9280/jsonrpc"
+        username: admin
+        password: admin
+        path: /ncs:devices/device{R1}/config/interface
+        operational: true
+      register: result
+
+    - name: Display the result
+      debug:
+        var: result
