@@ -1,0 +1,27 @@
+## To validate a yang file 
+$ pyang ethernet-switch.yang -f tree
+
+### To continuously validate a yang file 
+$ watch pyang ethernet-switch.yang -f tree
+
+### To cmpare XML(devnet-switch.xml) and YANG(ethernet-switch.yang) file 
+$ yang2dsdl -v devnet-switch.xml ethernet-switch.yang
+
+######## YANG data node definitions and Python data type
++--------------------+--------------------+----------------------+
+|                    | Single instance    | Multiple instances   |
++--------------------+--------------------+----------------------+
+| Simple data values | leaf               | leaf-list            |  YANG leaf eqv to python str, intr, bool
+|                    | str                | [ str, str, str ]    |  YANG leaf-list eqv to python list
+|                    | int                | [ int, int, int ]    | 
+|                    | bool               |                      |
++--------------------+--------------------+----------------------+
+| Group of data     | container                 | List                 |  YANG
+| values            | class MyClass():          | {                    |  eqv to python key-value pair for YANG List to python dict
+|                   |     var1 = int            |   "dev": MyClass(),  |  YANG container to python class to represent a group of data values
+|                   |     var2 = [ str, str ]   |   "net": MyClass()   |
+|                   |                           | }                    |
++-------------------+---------------------------+----------------------+
+
+
+

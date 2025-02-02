@@ -1,0 +1,20 @@
+module l3vpn-test {
+    namespace "http://example.com/l3vpn-test";
+    prefix "l3vpn-test";
+
+    list l3vpn-test {
+        key "vpn-name";
+        uses ncs:service-data;
+        ncs:servicepoint "l3vpn-test";
+
+        leaf vpn-name {
+            type string;
+        }
+        list vpn-id {
+            key "link-id";
+            leaf link-id {
+                type string;
+            }
+        }
+    }
+}

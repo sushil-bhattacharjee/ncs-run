@@ -1,0 +1,14 @@
+module protocol-base {
+    namespace "http://example.com/ns/yang/protocol-base";
+    prefix base;
+    description "The base module for the protocol";
+
+    identity protocol {
+        description "Custom identity for the protocol";
+  }
+
+    identity tcp {
+        base protocol;
+        description "The Transmission Control Protocol";
+  }
+}

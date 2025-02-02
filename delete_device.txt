@@ -1,0 +1,53 @@
+admin@ncs(config)# no devices device CSR1K17031R6 
+admin@ncs(config)# commit
+Aborted: illegal reference 'devices device-group XE-group device-name'
+admin@ncs(config)# no devices device-group XE-group device-name CSR1K17031R6 
+admin@ncs(config)# commit
+Aborted: illegal reference 'services loopback L1102 device'
+admin@ncs(config)# exit
+admin@ncs# show running-config services | include CSR1K17031R6
+ device        CSR1K17031R6
+ device        CSR1K17031R6
+admin@ncs# confi
+Entering configuration mode terminal
+admin@ncs(config)# no services loopback L1102 ?  
+Possible completions:
+  <cr>
+admin@ncs(config)# no services loopback L1102 
+admin@ncs(config)# commit
+Aborted: Failed to connect to device CSR1K17031R6: connection refused: NEDCOM CONNECT: No route to host in new state
+admin@ncs(config)# no services loopback L1102
+admin@ncs(config)# commit no-networking 
+Commit complete.
+admin@ncs(config)# end
+admin@ncs# config 
+Entering configuration mode terminal
+admin@ncs(config)# no devices device-group XE-group device-name CSR1K17031R6 
+admin@ncs(config)# commit no-networking 
+Commit complete.
+admin@ncs(config)# no devices device CSR1K17031R6 
+admin@ncs(config)# commit no-networking 
+Aborted: illegal reference 'services loopback LP200 device'
+admin@ncs(config)# no services loopback LP200
+admin@ncs(config)# commit no-networking 
+Commit complete.
+admin@ncs(config)# no devices device CSR1K17031R6
+admin@ncs(config)# commit no-networking 
+% No modifications to commit.
+admin@ncs(config)#
+
+###############deleting services##########################
+admin@ncs# show running-config loopback
+loopback nano3_loopback
+ device        R1
+ loopback-intf 301
+!
+loopback test_nano
+ device        R1
+ loopback-intf 202
+!
+admin@ncs# config
+Entering configuration mode terminal
+admin@ncs(config)# no loopback nano3_loopback 
+admin@ncs(config)# no loopback test_nano 
+admin@ncs(config)# commit

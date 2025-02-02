@@ -1,0 +1,357 @@
+sushil@Sushil-Ubuntu:~/ncs-run$ rm -rf packages/loopback_nano/
+sushil@Sushil-Ubuntu:~/ncs-run$ rm -rf state/packages-in-use/*
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs --with-package-reload
+
+
+
+##Step 1: Create a new service package with service-skeleton 
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs-make-package --no-java --service-skeleton python-and-template --component-class loopback_nano.Loopback --dest packages/loopback_nano loopback_nano
+
+##Step 2: Create a new yang file or modify the existing yang file
+sushil@Sushil-Ubuntu:~/ncs-run$ cat >| packages/loopback_nano/src/yang/loopback_nano.yang << EOF
+module loopback_nano {
+    yang-version 1.1;
+    namespace "http://com/example/loopback_nano";
+
+    prefix loopback_nano;
+
+    import tailf-ncs {
+        prefix ncs;
+    }
+
+    import ietf-inet-types {
+        prefix inet;
+    }
+
+    import tailf-common {
+        prefix tailf;
+    }
+
+    identity loopback {
+        base ncs:plan-component-type;
+    }
+
+    identity loopback-configured {
+        base ncs:plan-state;
+    }
+
+    ncs:plan-outline loopback-plan {
+        description "Loopback plan";
+
+        ncs:component-type "loopback_nano:loopback" {
+            ncs:state "ncs:init";
+            ncs:state "loopback_nano:loopback-configured" {
+                ncs:create {
+                    ncs:pre-condition {
+                        ncs:monitor "/prefix-allocations[name=$SERVICE/name]/ip-prefix";
+                    }
+                    ncs:nano-callback;
+                }
+            }
+            ncs:state "ncs:ready";
+        }
+    }
+
+    ncs:service-behavior-tree loopback {
+        description "Loopback behavior tree";
+        ncs:plan-outline-ref "loopback_nano:loopback-plan";
+        ncs:selector {
+            ncs:create-component "'loopback_nano'" {
+                ncs:component-type-ref "loopback_nano:loopback";
+            }
+        }
+    }
+
+    list prefix-allocations {
+        key "name";
+        unique "ip-prefix";
+
+        leaf name {
+            type leafref {
+                path /loopback/name;
+                require-instance false;
+            }
+        }
+
+        leaf ip-prefix {
+             type inet:ipv4-prefix;
+             tailf:info "IP prefix used to configure an address loopback interface";
+        }
+    }
+
+    list loopback {
+        key name;
+
+        uses ncs:service-data;
+        uses ncs:nano-plan-data;
+        ncs:servicepoint "loopback";
+
+        leaf name {
+            tailf:cli-allow-range;
+            tailf:info "Service instance name";
+            type string;
+        }
+
+        leaf device {
+            tailf:info "Device name";
+            type leafref {
+                path "/ncs:devices/ncs:device/ncs:name";
+            }
+        }
+
+        leaf loopback-intf {
+            tailf:info "Loopback interface number";
+           type uint32;
+        }
+
+    }
+}
+EOF
+
+##Step 3: Create a service template  new xml file or modify the existing xml file
+
+sushil@Sushil-Ubuntu:~/ncs-run$ cat >| packages/loopback_nano/python/loopback_nano/loopback_nano.py << EOF
+<config-template xmlns="http://tail-f.com/ns/config/1.0" name="loopback_nano-template">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+      <device>
+         <name>{/device}</name>
+         <config>             
+           <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+             <Loopback>
+               <id>{/loopback-intf}</id>
+               <ipv4>
+                 <address>
+                   <ip>{\$IP_ADDRESS}</ip>
+                   <mask>255.255.255.255</mask>
+                 </address>
+               </ipv4>
+             </Loopback>
+           </interface>
+           <interface xmlns="urn:ios">
+             <Loopback>
+               <name>{/loopback-intf}</name>
+               <ip>
+                 <address>
+                   <primary>
+                     <address>{\$IP_ADDRESS}</address>
+                     <mask>255.255.255.255</mask>
+                   </primary>
+                 </address>
+               </ip>
+             </Loopback>
+           </interface>             
+         </config>
+       </device>
+  </devices>
+</config-template>
+
+EOF
+
+##Step 4: Create an original service Python file.
+
+sushil@Sushil-Ubuntu:~/ncs-run$ cat >| packages/loopback_nano/python/loopback_nano/loopback_nano.py << EOF
+# -*- mode: python; python-indent: 4 -*-
+import ncs
+import ipaddress
+from ncs.application import Service
+
+
+# ------------------------
+# SERVICE CALLBACK EXAMPLE
+# ------------------------
+class ServiceCallbacks(Service):
+
+    # The create() callback is invoked inside NCS FASTMAP and
+    # must always exist.
+    @Service.create
+        
+        #@Service.create tells NSO that cb_create() should run whenever a new service instance is created or modified.
+        #NSO passes the service object, which contains all the YANG-modeled parameters.
+        
+    def cb_create(self, tctx, root, service, proplist):
+        self.log.info('Service create(service=', service._path, ')')
+
+        ip_prefix = service.ip_prefix
+        self.log.debug(f'Value of ip-prefix leaf is {ip_prefix}')
+        net = ipaddress.IPv4Network(ip_prefix)
+        ip_address = next(net.hosts())
+
+        vars = ncs.template.Variables()
+        vars.add('DUMMY', '127.0.0.1')
+        vars.add('IP_ADDRESS', ip_address)
+        template = ncs.template.Template(service)
+        template.apply('loopback_nano-template', vars) 
+
+
+# ---------------------------------------------
+# COMPONENT THREAD THAT WILL BE STARTED BY NCS.
+# ---------------------------------------------
+class loopback_nano(ncs.application.Application):
+    def setup(self):
+        # The application class sets up logging for us. It is accessible
+        # through 'self.log' and is a ncs.log.Log instance.
+        self.log.info('loopback_nano RUNNING')
+
+        # Service callbacks require a registration for a 'service point',
+        # as specified in the corresponding data model.
+        #
+        self.register_service('loopback_nano-servicepoint', ServiceCallbacks)
+
+
+    def teardown(self):
+        # When the application is finished (which would happen if NCS went
+        # down, packages were reloaded or some error occurred) this teardown
+        # method will be called.
+
+        self.log.info('loopback_nano FINISHED')
+EOF
+
+##Step 5: Add a nano plan and a behavior tree to the YANG modeCompile the yang file
+sushil@Sushil-Ubuntu:~/ncs-run$ cat >| packages/loopback_nano/src/yang/loopback_nano.yang << EOF
+module loopback_nano {
+    yang-version 1.1;
+    namespace "http://com/example/loopback_nano";
+
+    prefix loopback_nano;
+
+    import tailf-ncs {
+        prefix ncs;
+    }
+
+    import ietf-inet-types {
+        prefix inet;
+    }
+
+    import tailf-common {
+        prefix tailf;
+    }
+
+    identity loopback_nano {
+        base ncs:plan-component-type;
+    }
+
+    identity loopback_nano-configured {
+        base ncs:plan-state;
+    }
+
+    ncs:plan-outline loopback_nano-plan {
+        description "loopback_nano plan";
+
+        ncs:component-type "loopback_nano:loopback_nano" {
+            ncs:state "ncs:init";
+            ncs:state "loopback_nano:loopback_nano-configured" {
+                ncs:create {
+                    ncs:pre-condition {
+                        ncs:monitor "/prefix-allocations[name=\$SERVICE/name]/ip-prefix";
+                    }
+                    ncs:nano-callback;
+                }
+            }
+            ncs:state "ncs:ready";
+        }
+    }
+
+    ncs:service-behavior-tree loopback_nano {
+        description "loopback_nano behavior tree";
+        ncs:plan-outline-ref "loopback_nano:loopback_nano-plan";
+        ncs:selector {
+            ncs:create-component "'loopback_nano'" {
+                ncs:component-type-ref "loopback_nano:loopback_nano";
+            }
+        }
+    }
+
+    list prefix-allocations {
+        key "name";
+        unique "ip-prefix";
+
+        leaf name {
+            type leafref {
+                path /loopback_nano/name;
+                require-instance false;
+            }
+        }
+
+        leaf ip-prefix {
+             type inet:ipv4-prefix;
+             tailf:info "IP prefix used to configure an address loopback_nano interface";
+        }
+    }
+
+    list loopback_nano {
+        key name;
+
+        uses ncs:service-data;
+        uses ncs:nano-plan-data;
+        ncs:servicepoint "loopback_nano";
+
+        leaf name {
+            tailf:cli-allow-range;
+            tailf:info "Service instance name";
+            type string;
+        }
+		leaf device {
+            tailf:info "Device name";
+            type leafref {
+                path "/ncs:devices/ncs:device/ncs:name";
+            }
+        }
+
+        leaf loopback_nano-intf {
+            tailf:info "loopback_nano interface number";
+           type uint32;
+        }
+
+    }
+}
+EOF
+
+##Step 6: Compile the yang file [Build the package (the YANG model must be compiled before NSO can use it):]
+sushil@Sushil-Ubuntu:~/ncs-run$ make -C packages/loopback_nano/src/
+make: Entering directory '/home/sushil/ncs-run/packages/loopback_nano/src'
+mkdir -p ../load-dir
+/home/sushil/nso-6.3//bin/ncsc  `ls loopback_nano-ann.yang  > /dev/null 2>&1 && echo "-a loopback_nano-ann.yang"` \
+        --fail-on-warnings \
+         \
+        -c -o ../load-dir/loopback_nano.fxs yang/loopback_nano.yang
+make: Leaving directory '/home/sushil/ncs-run/packages/loopback_nano/src'
+
+##Step 7: Adapt the Python code to a nano service
+
+sushil@Sushil-Ubuntu:~/ncs-run$ cat >| packages/loopback_nano/python/loopback_nano/loopback_nano.py << EOF
+import ncs
+import ipaddress
+from ncs.application import NanoService
+
+
+class ServiceCallbacks(NanoService):
+    @NanoService.create
+    def cb_nano_create(self, tctx, root, service, plan, component, state, proplist, component_proplist):
+        self.log.info('NanoService create(service=', service._path, ')')
+
+        ip_prefix = root.prefix_allocations[service.name].ip_prefix
+        self.log.debug(f'Value of ip-prefix leaf is {ip_prefix}')
+        net = ipaddress.IPv4Network(ip_prefix)
+        ip_address = next(net.hosts())
+
+        vars = ncs.template.Variables()
+        vars.add('IP_ADDRESS', ip_address)
+        template = ncs.template.Template(service)
+        template.apply('loopback_nano-template', vars)
+
+        
+# ---------------------------------------------
+# COMPONENT THREAD THAT WILL BE STARTED BY NCS.
+# ---------------------------------------------
+class loopback_nano(ncs.application.Application):
+    def setup(self):
+        # The application class sets up logging for us. It is accessible
+        # through 'self.log' and is a ncs.log.Log instance.
+        self.log.info('loopback_nano RUNNING')
+
+        # Service callbacks require a registration for a 'service point',
+        # as specified in the corresponding data model.
+        #
+        self.register_nano_service('loopback_nano', 'loopback_nano:loopback_nano', 'loopback_nano:loopback_nano-configured', ServiceCallbacks)
+EOF
+

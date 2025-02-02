@@ -1,0 +1,56 @@
+module loopback_py {
+
+  namespace "http://example.com/loopback_py";
+  prefix loopback_py;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Bla bla...";
+
+  revision 2016-01-01 {
+    description
+      "Initial revision.";
+  }
+
+  list loopback_py {
+    key name;
+
+
+    uses ncs:service-data;
+    ncs:servicepoint loopback_py-servicepoint;
+
+    leaf name {
+      tailf:info "Service instance name";
+      type string;
+    }
+
+
+    // may replace this with other ways of refering to the devices.
+    leaf device {
+      tailf:info "Device Name";
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    // replace with your own stuff here
+    leaf loopback-intf {
+      tailf:info "Loopback interface number";
+      type uint32;
+    }
+    leaf ip_prefix {
+      tailf:info "IP prefix used to configure an address loopback interface";
+      type inet:ipv4-prefix;
+      mandatory true;
+    }
+  }
+}

@@ -1,0 +1,178 @@
+ncs run
+-----------------------------------------------
+How to run installed ncs
+
+sushil@Sushil-Ubuntu:~$ source $HOME/nso-6.3/ncsrc
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs
+----wait for few minutes to comeback the command line 
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs --status
+vsn: 6.3
+SMP support: yes, using 128 threads
+Using epoll: yes
+--now login to NCS
+-------new version nso removed old ssh-keys| add those
+admin@ncs# show running-config devices global-settings ssh-algorithms public-key 
+devices global-settings ssh-algorithms public-key [ ssh-ed25519 ecdsa-sha2-nistp256 ecdsa-sha2-nistp384 ecdsa-sha2-nistp521 rsa-sha2-512 rsa-sha2-256 ssh-rsa ssh-dss ]
+admin@ncs# 
+
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ ls
+logs  ncs-cdb  ncs.conf  packages  README.ncs  scripts  state
+sushil@Sushil-Ubuntu:~/ncs-run$ cd packages/
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ ls
+a10-acos-cli-3.0  alu-sr-cli-3.4  cisco-asa-cli-6.6  cisco-ios-cli-3.0  cisco-ios-cli-3.8  cisco-iosxr-cli-3.0  cisco-iosxr-cli-3.5  cisco-nx-cli-3.0  dell-ftos-cli-3.0  juniper-junos-nc-3.0
+
+sushil@Sushil-Ubuntu:~/ncs-run$ pwd
+/home/sushil/ncs-run
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs_cli -C -u admin
+
+admin connected from 127.0.0.1 using console on Sushil-Ubuntu
+admin@ncs# 
+admin@ncs# packages reloadcd src
+
+admin@ncs# show packages
+-------------------------------------------------------------------
+sushil@Sushil-Ubuntu:~/Downloads$ source $HOME/ncs-6.2/ncsrc
+sushil@Sushil-Ubuntu:~/Downloads$ ncs-setup --dest $HOME/ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-6.2/packages/neds$ cp -r * $HOME/ncs-run/packages/
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs_cli -C -u admin
+admin@ncs# packages reload 
+admin@ncs# show packages 
+
+------------------------------------------------------------------
+web NSO
+http://localhost:8080/webui-one/
+user: admin
+pass: admin
+
+------------------------------------------------------------------
+How run installed ncs
+------------------------------------------------------------------
+sushil@Sushil-Ubuntu:~$ source $HOME/ncs-6.2/ncsrc
+sushil@Sushil-Ubuntu:~/ncs-6.2/packages/neds$ sudo cp -r * $HOME/ncs-run/packages/
+sushil@Sushil-Ubuntu:~/ncs-6.2/packages/neds$ cd
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ cd packages/
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ ls
+a10-acos-cli-3.0  cisco-asa-cli-6.6  cisco-ios-cli-3.8    cisco-iosxr-cli-3.5  dell-ftos-cli-3.0
+alu-sr-cli-3.4    cisco-ios-cli-3.0  cisco-iosxr-cli-3.0  cisco-nx-cli-3.0     juniper-junos-nc-3.0
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ 
+sushil@Sushil-Ubuntu:~/ncs-6.2/packages/neds$ cd
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ cd packages/
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ ls
+a10-acos-cli-3.0  cisco-asa-cli-6.6  cisco-ios-cli-3.8    cisco-iosxr-cli-3.5  dell-ftos-cli-3.0
+alu-sr-cli-3.4    cisco-ios-cli-3.0  cisco-iosxr-cli-3.0  cisco-nx-cli-3.0     juniper-junos-nc-3.0
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ 
+sushil@Sushil-Ubuntu:~/ncs-run/packages$ cd
+sushil@Sushil-Ubuntu:~$ cd ncs-run/
+sushil@Sushil-Ubuntu:~/ncs-run$ pwd
+/home/sushil/ncs-run
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs --status
+vsn: 6.2
+SMP support: yes, using 128 threads
+Using epoll: yes
+available modules: backplane,netconf,cdb,cli,snmp,webui
+running modules: backplane,netconf,cdb,cli,snmp,webui
+status: started
+
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs --status | grep running
+running modules: backplane,netconf,cdb,cli,snmp,webui
+          tid=2002 db=running mode=read
+          tid=2007 db=running mode=read
+          tid=2008 db=running mode=read
+partial running locks: 
+  running:
+        db=running id=43 priority=1 path=/ncs:smart-license/ncs:development-mode
+        db=running id=42 priority=1 path=/ncs:devices/ncs:device
+        db=running id=35 priority=9 path=/kicker:kickers/ncs-kicker:notification-kicker
+        db=running id=37 priority=10 path=/ncs:devices/ncs:device/ncs:notifications/ncs:subscription
+        db=running id=36 priority=10 path=/ncs:devices/ncs:device/ncs:netconf-notifications/ncs:subscription
+        db=running id=38 priority=11 path=/ncs:devices/ncs:device/ncs:authgroup
+        db=running id=39 priority=12 path=/ncs:devices/ncs:authgroups/ncs:group
+        db=running id=34 priority=1 path=/ncs:devices/device/device-type
+        db=running id=33 priority=1 path=/ncs:devices/device/live-status-protocol/device-type
+        db=running id=32 priority=1 path=/ncs:java-vm/exception-error-message/verbosity
+        db=running id=31 priority=1 path=/ncs:java-vm/java-logging/logger
+
+--------------------------------------------------------------
+How add devices or check current config
+--------------------------------------------------------------
+sushil@Sushil-Ubuntu:~/ncs-run$ ncs_cli -C -u admin
+admin@ncs# packages reload
+admin@ncs# show packages 
+admin@ncs# show devices 
+Aborted: by user
+admin@ncs# 
+admin@ncs# *** ALARM connection-failure: Failed to connect to device IOSv: connection refused: The kexTimeout (20000 ms) expired.
+admin@ncs# show devices list 
+NAME  ADDRESS         DESCRIPTION  NED ID               ADMIN STATE  
+-------------------------------------------------------------------
+IOSv  192.168.60.250  -            cisco-ios-cli-3.0    unlocked     
+XRv   192.168.60.251  -            cisco-iosxr-cli-3.5  unlocked     
+admin@ncs# config 
+Entering configuration mode terminal
+admin@ncs(config)# devices authgroups group sushil default-map remote-name sushil remote-password sushil
+admin@ncs(config-group-sushil)# commit
+Commit complete.
+admin@ncs(config)# devices device R1 address 10.1.10.29 authgroup sushil device-type cli ned-id cisco-ios-cli-6.106 
+admin@ncs(config-device-R1)# state admin-state unlocked 
+admin@ncs(config-device-R1)# ssh fetch-host-keys
+admin@ncs# show running-config devices device R1 config
+admin@ncs(config-device-R1)#sync-from
+
+----------------------------------------------------
+Check config and sync
+----------------------------------------------------
+admin@ncs# devices device xr-sandbox check-sync          
+result out-of-sync
+info got: 1000000470+10009 expected: 1000000162+10009
+
+admin@ncs# devices device xr-sandbox compare-config
+admin@ncs# show running-config devices device R1 config 
+admin@ncs# devices device R1 sync-from dry-run { outformat xml }
+result-xml <interface xmlns="urn:ios">
+              <Loopback>
+                <name>100</name>
+                <ip>
+                  <address>
+                    <primary>
+                      <address>100.100.100.11</address>
+                      <mask>255.255.255.255</mask>
+                    </primary>
+                  </address>
+                </ip>
+              </Loopback>
+            </interface>
+            
+admin@ncs# devices device R1 sync-from
+admin@ncs# devices device R1 compare-config 
+diff 
+ devices {
+     device R1 {
+         config {
+             interface {
++                Loopback 100 {
++                    ip {
++                        address {
++                            primary {
++                                address 100.100.100.11;
++                                mask 255.255.255.255;
++                            }
++                        }
++                    }
++                }
+             }
+         }
+     }
+ }
+
+
+###########################
+
+

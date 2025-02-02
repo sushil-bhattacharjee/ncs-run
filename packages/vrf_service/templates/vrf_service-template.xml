@@ -1,0 +1,53 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+      <config>
+        <vrf xmlns="urn:ios">
+          <definition>
+            <name>{$vrf_name}</name>
+            <rd>{/vrf_rd}</rd>
+            <address-family>
+              <ipv4>
+                <route-target>
+                  <export>
+                    <asn-ip>{/vrf_export_asn}</asn-ip>
+                  </export>
+                  <import>
+                    <asn-ip>{/vrf_import_asn}</asn-ip>
+                  </import>
+                </route-target>
+              </ipv4>
+            </address-family>
+          </definition>
+        </vrf>
+        <vrf xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <vrf-list>
+            <name>{$vrf_name}</name>
+            <rd>{/vrf_rd}</rd>
+            <address-family>
+              <ipv4>
+                <unicast>
+                  <import>
+                    <route-target>
+                      <address-list>
+                        <name>{/vrf_import_asn}</name>
+                      </address-list>
+                    </route-target>
+                  </import>
+                  <export>
+                    <route-target>
+                      <address-list>
+                        <name>{/vrf_export_asn}</name>
+                      </address-list>
+                    </route-target>
+                  </export>
+                </unicast>
+              </ipv4>
+            </address-family>
+          </vrf-list>
+        </vrf>
+      </config>
+    </device>
+  </devices>
+</config-template>
