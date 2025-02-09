@@ -1,0 +1,114 @@
+admin@ncs# show devices template 
+devices template CHECK-1
+devices template COMPLIANCE-CHECK
+devices template COMPLIANCE-CHECK-COMMON-CONFIG
+devices template DOMAIN-NAME
+devices template OSPF_IOSXE
+devices template SET_DNS-SERVER
+devices template vrf-configuration
+
+###############Create device template##############
+admin@ncs(config)# devices template generic-config-tmpl ned-id cisco-ios-cli-6.106 config 
+admin@ncs(config-config)# iox
+admin@ncs(config-config)# no ip cef
+admin@ncs(config-config)# no ip domain lookup
+admin@ncs(config-config)# ip name-server 10.1.10.2
+admin@ncs(config-config)# ip name-server 8.8.8.8
+admin@ncs(config-config)# ip name-server 192.168.89.101
+admin@ncs(config-config)# ip name-server 1.1.1.1
+admin@ncs(config-config)# ip ssh version 2
+admin@ncs(config-config)# ip scp server enable
+admin@ncs(config-config)# ip forward-protocol nd
+admin@ncs(config-config)# ip http authentication local
+admin@ncs(config-config)# ip route 192.168.89.0 255.255.255.0 GigabitEthernet1 10.1.10.2
+admin@ncs(config-config)# banner exec "Welcome to James Bond World"
+admin@ncs(config-config)# banner login "Welcome to James Bond World"
+admin@ncs(config-config)# banner motd "Welcome to James Bond World"
+admin@ncs(config-config)# logging console debugging
+admin@ncs(config-config)# restconf
+admin@ncs(config-config)# netconf ssh
+admin@ncs(config-config)# netconf-yang feature candidate-datastore
+admin@ncs(config-config)# netconf-yang
+admin@ncs(config-config)# show configuration
+devices template generic-config-tmpl
+ ned-id cisco-ios-cli-6.106
+  config
+   iox
+   ip name-server 10.1.10.2
+   ip name-server 8.8.8.8
+   ip name-server 192.168.89.101
+   ip name-server 1.1.1.1
+   ip ssh version 2
+   ip scp server enable
+   ip forward-protocol nd
+   ip http authentication local
+   ip route 192.168.89.0 255.255.255.0 GigabitEthernet1 10.1.10.2
+   banner exec "Welcome to James Bond World"
+   banner login "Welcome to James Bond World"
+   banner motd "Welcome to James Bond World"
+   logging console debugging
+   restconf
+   netconf ssh
+   netconf-yang feature candidate-datastore
+   netconf-yang
+  !
+ !
+!
+admin@ncs(config-config)# commit
+Commit complete.
+######################Apply to a device or range of devices###################
+admin@ncs(config)# devices apply-template template-name generic-config-tmpl device [ ?
+Possible completions:
+  PE.51                Device created by maagic_create_device.py
+  R1                   
+  R2                   
+  R3                   
+  R4                   
+  R5                   
+  R6                   
+  SW2NXOS              
+  XRV779K3R10          
+  ]                    
+  devnetsandboxiosxe   
+  xr-sandbox           
+admin@ncs(config)# devices apply-template template-name generic-config-tmpl device [ PE.51 ]
+apply-template-result {
+    device PE.51
+    result ok
+}
+admin@ncs(config)# commit
+Commit complete.
+
+or
+admin@ncs(config)# devices device R2 apply-template MY_DEVICE_TEMPLATE
+admin@ncs(config-device-R2)# commit
+##################################How to check the contents of template####
+admin@ncs# config   
+Entering configuration mode terminal
+admin@ncs(config)# show full-configuration devices template generic-config-tmpl 
+devices template generic-config-tmpl
+ ned-id cisco-ios-cli-6.106
+  config
+   iox
+   ip name-server 10.1.10.2
+   ip name-server 8.8.8.8
+   ip name-server 192.168.89.101
+   ip name-server 1.1.1.1
+   ip ssh version 2
+   ip scp server enable
+   ip forward-protocol nd
+   ip http authentication local
+   ip route 192.168.89.0 255.255.255.0 GigabitEthernet1 10.1.10.2
+   banner exec "Welcome to James Bond World"
+   banner login "Welcome to James Bond World"
+   banner motd "Welcome to James Bond World"
+   logging console debugging
+   restconf
+   netconf ssh
+   netconf-yang feature candidate-datastore
+   netconf-yang
+  !
+ !
+!
+admin@ncs(config)# 
+#########################################

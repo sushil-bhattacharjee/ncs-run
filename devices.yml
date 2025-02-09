@@ -1,0 +1,25 @@
+devices:
+  - name: "CE-61"
+    authgroup: "CML2.8"
+    address: "10.1.10.61"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "CE-62"
+    authgroup: "CML2.8"
+    address: "10.1.10.62"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "PE-51"
+    authgroup: "CML2.8"
+    address: "10.1.10.51"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "PE-52"
+    authgroup: "CML2.8"
+    address: "10.1.10.52"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "P-60"
+    authgroup: "CML2.8"
+    address: "10.1.10.60"
+    ned: "cisco-iosxr-cli-7.55"

@@ -1,0 +1,2 @@
+sushil@Sushil-Ubuntu:~/ncs-run$ echo "/logs" >> .gitignore
+echo "setup.mk*" >> .gitignore

@@ -5,7 +5,7 @@
       <config>
         <vrf xmlns="urn:ios">
           <definition>
-            <name>{$vrf_name}</name>
+            <name>{/vrf_name}</name>
             <rd>{/vrf_rd}</rd>
             <address-family>
               <ipv4>
@@ -23,7 +23,7 @@
         </vrf>
         <vrf xmlns="http://tail-f.com/ned/cisco-ios-xr">
           <vrf-list>
-            <name>{$vrf_name}</name>
+            <name>{/vrf_name}</name>
             <rd>{/vrf_rd}</rd>
             <address-family>
               <ipv4>

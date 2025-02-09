@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../nso-6.3/etc"
+		}
+	],
+	"settings": {}
+}

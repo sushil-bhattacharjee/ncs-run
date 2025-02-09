@@ -43,7 +43,7 @@ def main(args):
                root = ncs.maagic.get_root(m)
                device = root.devices.device[args.name]
                print(f"Fetching host keys for device {args.name}")
-               output = device.fetch_host_keys()
+               output = root.devices.device[args.name].fetch_ssh_host_keys()
                print(f"Host keys fetched for device {args.name}, output: {output.result}")   
                print(f"Syncing device {args.name}")
                output = device.sync_from()

@@ -21,6 +21,9 @@ endif
 
 all: test
 
+build:
+	$(MAKE) -C $(DIR) build JOB_DIR=$(JOB_DIR) || exit 1
+
 clean:
 	$(MAKE) -C $(DIR) clean JOB_DIR=$(JOB_DIR) || exit 1
 

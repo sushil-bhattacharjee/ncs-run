@@ -21,3 +21,4 @@ do them manually if you wish.
 The 'lux' test tool can be obtained from:
 
   https://github.com/hawk/lux.git
+admin@ncs(config)# vrf_service vrfservice1 vrf_name vrf_name_pythonD device R1 vrf_rd 65001:11 vrf_export_asn 65001:111

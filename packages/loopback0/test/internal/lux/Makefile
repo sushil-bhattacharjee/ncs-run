@@ -1,4 +1,9 @@
-DIRS = lux
+DIRS =  service
+
+build:
+	@for d in $(DIRS) ; do \
+	  $(MAKE) -C $$d build || exit 1; \
+	done
 
 clean:
 	@for d in $(DIRS) ; do \

@@ -3,7 +3,8 @@
 import ncs
 from ncs.application import Service
 
-VRF_NAMES = ["vrf_name_pythonA", "vrf_name_pythonB", "vrf_name_pythonC", "vrf_name_pythonD", "vrf_name_pythonE"]
+#VRF_NAMES = ["vrf_name_pythonA", "vrf_name_pythonB", "vrf_name_pythonC", "vrf_name_pythonD", "vrf_name_pythonE", 
+#             "vrf_name_pythonF", "vrf_name_pythonG", "vrf_name_pythonH", "vrf_name_pythonI", "vrf_name_pythonJ"]
 
 class VrfServiceCallbacks(Service):
 
@@ -12,15 +13,15 @@ class VrfServiceCallbacks(Service):
         self.log.info(f'Creating VRF service: {service.name}')
 
         # Check if VRF_NAMES is empty
-        if not VRF_NAMES:
-            self.log.error("VRF_NAMES list is empty! Cannot assign a VRF name.")
-            raise ValueError("No available VRF names in the list.")
+        # if not VRF_NAMES:
+        #     self.log.error("VRF_NAMES list is empty! Cannot assign a VRF name.")
+        #     raise ValueError("No available VRF names in the list.")
 
-        vrf_name = VRF_NAMES.pop(0)
-        self.log.info(f'Assigned VRF Name: {vrf_name}')
-
+        # vrf_name = VRF_NAMES.pop(0)
+        # self.log.info(f'Assigned VRF Name: {vrf_name}')
+       
         vars = ncs.template.Variables()
-        vars.add('vrf_name', vrf_name)
+        vars.add('vrf_name', service.vrf_name)
         vars.add('device', service.device)
         vars.add('vrf_rd', service.vrf_rd)
         vars.add('vrf_export_asn', service.vrf_export_asn)
@@ -29,7 +30,7 @@ class VrfServiceCallbacks(Service):
         template = ncs.template.Template(service)
         template.apply('vrf_service-template', vars)
 
-        self.log.info(f'VRF {vrf_name} applied to device {service.device}')
+        self.log.info(f'VRF {service.vrf_name} applied to device {service.device}')
 
 class VrfService(ncs.application.Application):
     def setup(self):
