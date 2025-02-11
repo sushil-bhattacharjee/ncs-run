@@ -1,9 +1,0 @@
-<project-meta-data xmlns="http://tail-f.com/ns/ncs-project">
-  <name>tailf-hcc-project</name>
-  <project-version>6.0.2</project-version>
-  <description>Project for Tail-f HA Cluster Control Interface</description>
-  <package>
-    <name>tailf-hcc</name>
-    <local/>
-  </package>
-</project-meta-data>

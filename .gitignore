@@ -1,7 +1,7 @@
 logs/
 state/
 ncs-cdb/
-packages/cisco-ios*/
+packages/cisco*/
 packages/juniper*/
 packages/dell*/
 packages/a10*/
