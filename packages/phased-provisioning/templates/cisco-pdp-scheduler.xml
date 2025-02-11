@@ -1,0 +1,14 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <scheduler xmlns="http://tail-f.com/ns/ncs-scheduler">
+    <task>
+      <name>{$SCHEDULER_TASK}</name>
+      <?set-root-node {/}?>
+      <schedule>{$TIME}</schedule>
+      <action-node xmlns:cisco-pdp="http://cisco.com/ns/nso/cfp/cisco-phased-provisioning">/cisco-pdp:phased-provisioning/cisco-pdp:task[name='{$TASK}']</action-node>
+      <action-name>callback-execute-phased-provisioning</action-name>
+      <enabled>true</enabled>
+      <ha-mode when="{$IS_HA_PRIMARY = 'True'}">primary</ha-mode>
+      <local-user>{$USER}</local-user>
+    </task>
+  </scheduler>
+</config-template>

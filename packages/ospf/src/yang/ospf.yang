@@ -1,0 +1,64 @@
+module ospf {
+  namespace "http://com/example/ospf";
+  prefix ospf;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description "OSPF Service YANG Model";
+
+  augment /ncs:services {
+    list ospf {
+      key name;
+
+      uses ncs:service-data;
+      ncs:servicepoint "ospf";  // Ensure this matches the template's servicepoint
+
+      leaf name {
+        type string;
+        description "Service instance name";
+      }
+
+      leaf process-id {
+        type uint32;
+        description "OSPF process ID";
+      }
+
+      leaf router-id {
+        type inet:ipv4-address;
+        description "Router ID for OSPF";
+      }
+
+      list network {
+        key "ip";
+        description "Networks to configure in OSPF";
+
+        leaf ip {
+          type inet:ipv4-address;
+          description "Network IP address (without CIDR)";
+        }
+
+        leaf mask {
+          type inet:ipv4-address;
+          description "Subnet mask for the network";
+        }
+
+        leaf area {
+          type uint32;
+          description "Area ID for the network";
+        }
+      }
+
+      leaf-list device {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        description "Device list to apply the OSPF configuration";
+      }
+    }
+  }
+}

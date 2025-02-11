@@ -1,0 +1,9 @@
+<project-meta-data xmlns="http://tail-f.com/ns/ncs-project">
+  <name>resource-manager-project</name>
+  <project-version>4.2.6</project-version>
+  <description>Bundle package for resource-manager bundle.</description>
+  <package>
+    <name>resource-manager</name>
+    <local/>
+  </package>
+</project-meta-data>

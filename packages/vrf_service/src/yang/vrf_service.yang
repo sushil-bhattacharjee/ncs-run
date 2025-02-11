@@ -1,0 +1,56 @@
+module vrf_service {
+  namespace "http://example.com/vrf_service";
+  prefix vrf_service;
+
+  import tailf-ncs {
+    prefix ncs;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+
+  description "VRF Service Model";
+
+  revision 2025-02-02 {
+    description "Initial revision.";
+  }
+
+  list vrf_service {
+    key name;
+
+    uses ncs:service-data;
+    ncs:servicepoint vrf_service-servicepoint;
+
+    leaf name {
+      tailf:info "Service instance name";
+      type string;
+    }
+
+    leaf device {
+      tailf:info "Device Name";
+      type leafref {
+        path "/ncs:devices/ncs:device/ncs:name";
+      }
+    }
+
+    leaf vrf_name {
+      tailf:info "VRF Name";
+      type string;
+    }
+
+    leaf vrf_rd {
+      tailf:info "Route Distinguisher";
+      type string;
+    }
+
+    leaf vrf_export_asn {
+      tailf:info "Route Target Export ASN";
+      type string;
+    }
+
+    leaf vrf_import_asn {
+      tailf:info "Route Target Import ASN";
+      type string;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>vrf_service</name>
+  <package-version>1.0</package-version>
+  <description>Generated Python package</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>vrf_service</name>
+    <application>
+      <python-class-name>vrf_service.vrf_service.VrfService</python-class-name>
+    </application>
+  </component>
+</ncs-package>

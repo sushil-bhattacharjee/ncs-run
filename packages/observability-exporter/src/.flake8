@@ -1,0 +1,4 @@
+[flake8]
+exclude = ../python/observability_exporter/background_process.py
+max-line-length = 160
+ignore = E266,W503
