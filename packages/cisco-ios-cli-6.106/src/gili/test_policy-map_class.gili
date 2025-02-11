@@ -1,9 +1,0 @@
-! ios-stats:test/policy-map{}/class{}
-
-<root>
-  <list :: . :: Class (\S+)/>
-   <key :: Class (\S+) :: name/>
-   <leaf :: priority :: priority (.+)/>
-  </list>
- </list>
-</root>

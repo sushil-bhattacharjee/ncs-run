@@ -1,4 +1,6 @@
 # **Loopback100 Python-Template for Cisco NSO**
+**Updating using FASTMAP for existing**
+https://chatgpt.com/c/679cdef3-b258-800b-adbc-e515843af8cd
 
 ## **Overview**
 This document provides step-by-step instructions to create a **Loopback100 Service** using Python and XML templates in Cisco NSO. The service allows configuring **Loopback100 interfaces** on multiple devices with FastMap support for future modifications.

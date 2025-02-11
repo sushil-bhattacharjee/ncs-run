@@ -1,6 +1,8 @@
 logs/
 state/
-ncs-cdb//logs
+ncs-cdb/
 packages/cisco-ios*/
 packages/juniper*/
 packages/dell*/
+packages/a10*/
+packages/alu*/
