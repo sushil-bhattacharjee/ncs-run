@@ -24,4 +24,5 @@ $ yang2dsdl -v devnet-switch.xml ethernet-switch.yang
 +-------------------+---------------------------+----------------------+
 
 
-
+###############
+yanger -f tree packages/l3vpn/src/yang/l3vpn.yang | sed -n -e '/l3vpn/p' -e '/link/,$p'

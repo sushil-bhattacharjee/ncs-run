@@ -1,0 +1,43 @@
+module loopback100 {
+  namespace "http://example.com/loopback100";
+  prefix loopback100;
+
+  import ietf-inet-types { prefix inet; }
+  import tailf-common { prefix tailf; }
+  import tailf-ncs { prefix ncs; }
+
+  description "Loopback100 service supporting multiple devices entered one by one.";
+
+  revision 2025-02-10 {
+    description "Added support for multiple devices inside the service.";
+  }
+
+  list loopback100 {
+    key name;
+    uses ncs:service-data;
+    ncs:servicepoint "loopback100-servicepoint";
+
+    leaf name {
+      type string;
+      description "Service Instance Name";
+    }
+
+    list devices {
+      key name;
+      description "List of Devices";
+
+      leaf name {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        mandatory true;
+      }
+
+      leaf ip_address {
+        type inet:ipv4-address;
+        mandatory true;
+      }
+    }
+  }
+}
+

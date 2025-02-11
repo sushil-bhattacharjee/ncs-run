@@ -23,3 +23,25 @@ devices:
     authgroup: "CML2.8"
     address: "10.1.10.60"
     ned: "cisco-iosxr-cli-7.55"
+
+  - name: "MI6-63"
+    authgroup: "CML2.8"
+    address: "10.1.10.63"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "MI6-64"
+    authgroup: "CML2.8"
+    address: "10.1.10.64"
+    ned: "cisco-ios-cli-6.106"
+
+  - name: "PE-53"
+    authgroup: "CML2.8"
+    address: "10.1.10.53"
+    ned: "cisco-iosxr-cli-7.55"
+
+  - name: "PE-54"
+    authgroup: "CML2.8"
+    address: "10.1.10.54"
+    ned: "cisco-ios-cli-6.106"
+
+

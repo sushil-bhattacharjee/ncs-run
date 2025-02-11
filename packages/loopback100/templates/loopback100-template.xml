@@ -1,0 +1,39 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device tags="merge">
+      <name>{\$DEVICE}</name>  <!-- This must correctly reference the actual device name -->
+      <config>
+        <!-- IOS-XE -->
+        <interface xmlns="urn:ios">
+          <Loopback>
+            <name>100</name>
+            <description>Created by NSO Loopback100 Service</description>
+            <ip>
+              <address>
+                <primary>
+                  <address>{\$IP_ADDRESS}</address>
+                  <mask>255.255.255.255</mask>
+                </primary>
+              </address>
+            </ip>
+          </Loopback>
+        </interface>
+
+        <!-- IOS-XR -->
+        <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <Loopback>
+            <id>100</id>
+            <description>Created by NSO Loopback100 Service</description>
+            <ipv4>
+              <address>
+                <ip>{/ip_address}</ip>
+                <mask>255.255.255.255</mask>
+              </address>
+            </ipv4>
+          </Loopback>
+        </interface>
+      </config>
+    </device>
+  </devices>
+</config-template>
+

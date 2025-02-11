@@ -1,0 +1,13 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>route_reflector_bgp_nbr</name>
+  <package-version>1.0</package-version>
+  <description>Generated Python package</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>route_reflector_bgp_nbr</name>
+    <application>
+      <python-class-name>route_reflector_bgp_nbr.route_reflector_bgp_nbr.RouteReflectorBgpNbr</python-class-name>
+    </application>
+  </component>
+</ncs-package>

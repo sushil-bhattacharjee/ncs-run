@@ -1,7 +1,6 @@
 logs/
 state/
 ncs-cdb//logs
-packages/cisco-ios-cli-3*/
-packages/cisco-iosxr-cli-3*/
+packages/cisco-ios*/
 packages/juniper*/
 packages/dell*/

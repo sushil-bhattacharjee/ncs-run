@@ -1,0 +1,48 @@
+admin@ncs# templatize devices device PE-52 config router ospf
+Found potential templates at:
+  devices device PE-52 \ config \ router ospf 65001 \ network {$network-ip} {$network-mask}
+
+Template path:
+  devices device PE-52 \ config \ router ospf 65001 \ network {$network-ip} {$network-mask}
+Variables in template:
+  {$network-ip}  {$network-mask}
+
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>PE-52</name>
+      <config>
+        <router xmlns="urn:ios">
+          <ospf>
+            <id>65001</id>
+            <network>
+              <ip>{$network-ip}</ip>
+              <mask>{$network-mask}</mask>
+              <area>0</area>
+            </network>
+          </ospf>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config>
+
+############mpls ios ###########
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>PE-51</name>
+      <config>
+        <mpls xmlns="urn:ios">
+          <ldp>
+            <router-id>
+              <interface>Loopback0</interface>
+            </router-id>
+          </ldp>
+        </mpls>
+      </config>
+    </device>
+  </devices>
+</config>
+
+#############
