@@ -1,0 +1,28 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+    <devices xmlns="http://tail-f.com/ns/ncs">
+      <device tags="merge">
+        <name>{\$DEVICE}</name>
+        <config>
+          <!-- IOS-XE Configuration -->
+          <interface xmlns="urn:ios">
+            <GigabitEthernet>
+              <name>{\$INTERFACE}</name>
+              <mpls>
+                <ip/>
+              </mpls>
+            </GigabitEthernet>
+          </interface>
+  
+          <!-- IOS-XR Configuration -->
+          <mpls xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <ldp>
+              <interface>
+                <name>{\$INTERFACE}</name>
+              </interface>
+            </ldp>
+          </mpls>
+        </config>
+      </device>
+    </devices>
+  </config-template>
+  

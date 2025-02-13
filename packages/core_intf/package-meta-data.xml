@@ -1,0 +1,13 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>core_intf</name>
+  <package-version>1.0</package-version>
+  <description>Generated Python package</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>core_intf</name>
+    <application>
+      <python-class-name>core_intf.core_intf.CoreIntf</python-class-name>
+    </application>
+  </component>
+</ncs-package>

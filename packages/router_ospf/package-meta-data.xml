@@ -1,0 +1,13 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>router_ospf</name>
+  <package-version>1.0</package-version>
+  <description>Generated Python package</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>router_ospf</name>
+    <application>
+      <python-class-name>router_ospf.router_ospf.ROUTER_OSPF</python-class-name>
+    </application>
+  </component>
+</ncs-package>

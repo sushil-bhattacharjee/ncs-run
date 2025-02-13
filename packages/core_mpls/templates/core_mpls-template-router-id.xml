@@ -1,0 +1,24 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device tags="merge">
+      <name>{\$DEVICE}</name>
+      <config>
+        <!-- ✅ IOS-XE Configuration -->
+        <mpls xmlns="urn:ios">
+          <ldp>
+            <router-id>
+              <interface>Loopback0</interface>
+            </router-id>
+          </ldp>
+        </mpls>
+
+        <!-- ✅ IOS-XR Configuration (General, without address-family) -->
+        <mpls xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <ldp>
+            <router-id>{\$ROUTER_ID}</router-id>
+          </ldp>
+        </mpls>
+      </config>
+    </device>
+  </devices>
+</config-template>

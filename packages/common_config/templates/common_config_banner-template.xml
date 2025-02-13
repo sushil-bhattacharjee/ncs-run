@@ -1,0 +1,16 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device>
+      <name>{/device}</name>
+        <!--ios -->
+        <config>
+          <banner xmlns="urn:ios">
+            <motd>{/banner_motd_yang}</motd>
+            <exec>{/banner_exec_yang}</exec>
+            <incoming>{/banner_incoming_yang}</incoming>
+            <login>{/banner_login_yang}</login>
+          </banner>
+      </config>
+    </device>
+  </devices>
+</config-template>

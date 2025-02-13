@@ -1,0 +1,15 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>core_mpls</name>
+  <package-version>1.0</package-version>
+  <description>MPLS LDP Service using FASTMAP</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>core_mpls</name>
+    <application>
+      <python-class-name>core_mpls.core_mpls.CoreMpls</python-class-name>  <!-- Ensure consistency -->
+    </application>
+  </component>
+</ncs-package>
+
+

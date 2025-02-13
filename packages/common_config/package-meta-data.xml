@@ -1,0 +1,13 @@
+<ncs-package xmlns="http://tail-f.com/ns/ncs-packages">
+  <name>common_config</name>
+  <package-version>1.0</package-version>
+  <description>Generated Python package</description>
+  <ncs-min-version>6.3</ncs-min-version>
+
+  <component>
+    <name>common_config</name>
+    <application>
+      <python-class-name>common_config.common_config.COMN_CONFIG</python-class-name>
+    </application>
+  </component>
+</ncs-package>

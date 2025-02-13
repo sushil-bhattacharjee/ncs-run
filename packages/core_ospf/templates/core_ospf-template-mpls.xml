@@ -1,0 +1,17 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device tags="merge">
+      <name>{\$DEVICE}</name>
+      <config>
+        <router xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <ospf>
+            <name>{\$PROCESS_ID}</name>
+            <area>
+              <id>{\$AREA_ID}</id>
+            </area>
+          </ospf>
+        </router>
+      </config>
+    </device>
+  </devices>
+</config-template>

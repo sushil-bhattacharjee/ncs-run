@@ -1,0 +1,44 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+    <device tags="merge">
+      <name>{\$DEVICE}</name>
+      <config>
+        <!-- ✅ IOS-XE Configuration -->
+        <interface xmlns="urn:ios">
+          <GigabitEthernet>
+            <name>{\$INTERFACE}</name>
+            <ip>
+              <!-- ✅ Remove any existing IP before applying the new one -->
+              <no-address>
+                <address>false</address>
+              </no-address>
+              <address>
+                <primary>
+                  <address>{\$IP_ADDRESS}</address>
+                  <mask>255.255.255.0</mask>  <!-- Fixed subnet mask -->
+                </primary>
+              </address>
+            </ip>
+            <shutdown tags="delete"/>
+          </GigabitEthernet>
+        </interface>
+
+        <!-- ✅ IOS-XR Configuration -->
+        <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <GigabitEthernet>
+            <id>{\$INTERFACE}</id>
+            <ipv4>
+              <address tags="delete"/>
+              <address>
+                <ip>{\$IP_ADDRESS}</ip>
+                <mask>255.255.255.0</mask>  <!-- Fixed subnet mask -->
+              </address>
+            </ipv4>
+            <shutdown tags="delete"/>
+          </GigabitEthernet>
+        </interface>
+      </config>
+    </device>
+  </devices>
+</config-template>
+

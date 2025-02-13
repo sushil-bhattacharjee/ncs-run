@@ -1,0 +1,55 @@
+
+module core_mpls {
+  namespace "http://example.com/core_mpls";
+  prefix core_mpls;
+
+  import ietf-inet-types { prefix inet; }
+  import tailf-common { prefix tailf; }
+  import tailf-ncs { prefix ncs; }
+
+  description "MPLS LDP Service using FASTMAP";
+
+  revision 2025-02-12 {
+    description "Initial revision.";
+  }
+
+  list core_mpls {
+    key name;
+    uses ncs:service-data;
+    ncs:servicepoint "core_mpls-servicepoint";
+
+    leaf name {
+      type string;
+      description "Service Instance Name";
+    }
+
+    list devices {
+      key name;
+      description "List of Core Devices";
+
+      leaf name {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        mandatory true;
+      }
+
+      leaf router_id {
+        type inet:ipv4-address;
+        description "Router ID for MPLS LDP";
+        mandatory true;
+      }
+
+      list interfaces {
+        key name;
+        description "List of MPLS-enabled Interfaces";
+
+        leaf name {
+          type string;
+          description "Interface name";
+          mandatory true;
+        }
+      }
+    }
+  }
+}

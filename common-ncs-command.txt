@@ -1,0 +1,22 @@
+##Check the current verison of device directly from the device instaed of CDB##
+admin@ncs# devices device PE-53 live-status exec show ver 
+result 
+Wed Feb 12 21:52:19.305 UTC
+Cisco IOS XR Software, Version 7.11.1
+Copyright (c) 2013-2023 by Cisco Systems, Inc.
+
+Build Information:
+ Built By     : deenayak
+ Built On     : Sun Dec  3 14:30:34 PST 2023
+ Built Host   : iox-ucs-043
+ Workspace    : /auto/srcarchive14/prod/7.11.1/xrv9k/ws
+ Version      : 7.11.1
+ Location     : /opt/cisco/XR/packages/
+ Label        : 7.11.1
+
+cisco IOS-XRv 9000 () processor
+System uptime is 10 hours 50 minutes
+
+RP/0/RP0/CPU0:PE-53#
+admin@ncs# devices device PE-53 live-status exec show run
+###########

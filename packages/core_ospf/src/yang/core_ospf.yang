@@ -1,0 +1,92 @@
+module core_ospf {
+  namespace "http://example.com/core_ospf";
+  prefix core_ospf;
+
+  import ietf-inet-types { prefix inet; }
+  import tailf-common { prefix tailf; }
+  import tailf-ncs { prefix ncs; }
+
+  description "OSPF Core Routing Service using FASTMAP";
+
+  revision 2025-02-14 {
+    description "Initial revision.";
+  }
+
+  list core_ospf {
+    key name;
+    uses ncs:service-data;
+    ncs:servicepoint "core_ospf-servicepoint";
+
+    leaf name {
+      type string;
+      description "Service Instance Name";
+    }
+
+    list devices {
+      key name;
+      description "List of Core Devices";
+
+      leaf name {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        mandatory true;
+      }
+
+      leaf process_id {
+        type uint32;
+        description "OSPF Process ID";
+        mandatory true;
+      }
+
+      leaf router_id {
+        type inet:ipv4-address;
+        description "Router ID for OSPF";
+        mandatory true;
+      }
+
+      list areas {
+        key id;
+        description "List of OSPF areas";
+
+        leaf id {
+          type uint32;
+          description "OSPF Area ID";
+          mandatory true;
+        }
+
+        list interfaces {
+          key name;
+          description "List of OSPF-enabled Interfaces";
+
+          leaf name {
+            type string;
+            description "Interface name";
+            mandatory true;
+          }
+
+          leaf network_type {
+            type enumeration {
+              enum "broadcast";
+              enum "point-to-point";
+            }
+            description "OSPF Network Type";
+            mandatory true;
+          }
+
+          leaf subnet_mask {
+            type inet:ipv4-address;
+            description "Subnet Mask (Only for IOS)";
+          }
+        }
+      }
+
+      leaf mpls_ldp_autoconfig {
+        type boolean;
+        description "Enable MPLS LDP Auto-config for OSPF";
+        default false;
+      }
+    }
+  }
+}
+

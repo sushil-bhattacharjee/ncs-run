@@ -1,0 +1,56 @@
+module core_intf {
+  namespace "http://example.com/core_intf";
+  prefix core_intf;
+
+  import ietf-inet-types { prefix inet; }
+  import tailf-common { prefix tailf; }
+  import tailf-ncs { prefix ncs; }
+
+  description "Core Interface Service supporting multiple interfaces per device.";
+
+  revision 2025-02-12 {
+    description "Fixed issue to support multiple interfaces per device.";
+  }
+
+  list core_intf {
+    key name;
+    uses ncs:service-data;
+    ncs:servicepoint "core_intf-servicepoint";
+
+    leaf name {
+      type string;
+      description "Service Instance Name";
+    }
+
+    list devices {
+      key name;
+      description "List of Devices in the Core Network";
+
+      leaf name {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        mandatory true;
+      }
+
+      list interfaces {
+        key interface;
+        description "List of Interfaces for each device";
+
+        leaf interface {
+          type string;
+          description "Interface Name (e.g., GigabitEthernet0/0/0/2)";
+          mandatory true;
+        }
+
+        leaf ip_address {
+          type inet:ipv4-address;
+          description "IP Address for the Interface";
+          mandatory true;
+        }
+      }
+    }
+  }
+}
+
+
