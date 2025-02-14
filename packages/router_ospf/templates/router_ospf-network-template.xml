@@ -1,15 +1,15 @@
 <config-template xmlns="http://tail-f.com/ns/config/1.0">
   <devices xmlns="http://tail-f.com/ns/ncs">
     <device>
-      <name>{/device}</name>
+      <name>{\$device_name_py}</name>
       <config>
         <router xmlns="urn:ios">
           <ospf>
-            <id>{/process_id}</id>  <!-- ✅ Ensure the OSPF Process ID is defined -->
+            <id>{\$process_id_py}</id>
             <network>
-              <ip>{\$network_address}</ip>
-              <mask>{\$wildcard_mask}</mask>
-              <area>{\$area}</area>
+              <ip>{\$network_address_py}</ip>
+              <mask>{\$wildcard_mask_py}</mask>
+              <area>{\$area_py}</area>
             </network>
           </ospf>
         </router>

@@ -35,44 +35,49 @@ module router_ospf {
     ncs:servicepoint router_ospf-servicepoint;
 
     // may replace this with other ways of refering to the devices.
-    leaf device {
-      type leafref {
-        path "/ncs:devices/ncs:device/ncs:name";
+    list devices {
+      key device_name;
+      description "List of OSPF-enabled devices";
+
+      leaf device_name {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+        mandatory true;
       }
-    }
 
     // replace with your own stuff here
-    leaf process_id {
-      type uint32;
-      description "OSPF process ID";
-      mandatory true;
-    }
-    leaf router_id {
-      type inet:ipv4-address;
-      description "Router ID for OSPF";
-      mandatory true;
-    }
-    
-    list network {
-      key network_address;
-      description "List of OSPF network statements";
-
-      leaf network_address {
-        type inet:ipv4-address;
-        description "Network IP Address";
-        mandatory true;
-      }
-
-      leaf wildcard_mask {
-        type inet:ipv4-address;
-        description "Subnet Mask for the OSPF network";
-        mandatory true;
-      }
-
-      leaf area {
+      leaf process_id {
         type uint32;
-        description "OSPF Area ID";
+        description "OSPF process ID";
         mandatory true;
+      }
+      leaf router_id {
+        type inet:ipv4-address;
+        description "Router ID for OSPF";
+        mandatory true;
+      }
+      list networks {
+        key network_address;
+        description "List of OSPF network statements";
+
+        leaf network_address {
+          type inet:ipv4-address;
+          description "Network IP Address";
+          mandatory true;
+        }
+
+        leaf wildcard_mask {
+          type inet:ipv4-address;
+          description "Subnet Mask for the OSPF network";
+          mandatory true;
+        }
+
+        leaf area {
+          type uint32;
+          description "OSPF Area ID";
+          mandatory true;
+        }
       }
     }
   }
