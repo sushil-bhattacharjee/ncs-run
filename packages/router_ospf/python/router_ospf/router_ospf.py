@@ -16,6 +16,7 @@ class ServiceCallbacks(Service):
             vars.add("device_name_py", device.device_name)
             vars.add("process_id_py", device.process_id)
             vars.add("router_id_py", device.router_id)
+            vars.add("mpls_ldp_autoconfig", str(device.mpls_ldp_autoconfig).lower())
             # Apply OSPF base configuration
             template.apply('router_ospf-template', vars)
 

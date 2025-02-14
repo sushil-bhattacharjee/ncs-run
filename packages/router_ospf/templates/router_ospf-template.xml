@@ -1,4 +1,5 @@
-<config-template xmlns="http://tail-f.com/ns/config/1.0">
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                  xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
   <devices xmlns="http://tail-f.com/ns/ncs">
     <device>
       <name>{\$device_name_py}</name>
@@ -8,6 +9,11 @@
           <ospf>
             <id>{\$process_id_py}</id>
             <router-id>{\$router_id_py}</router-id>
+            <mpls when="{mpls_ldp_autoconfig='true'}">
+              <ldp>
+                <autoconfig/>
+              </ldp>
+            </mpls>
           </ospf>
         </router>
         <!-- IOS-XR Configuration -->
@@ -15,6 +21,11 @@
           <ospf>
             <name>{\$process_id_py}</name>
             <router-id>{\$router_id_py}</router-id>
+            <mpls when="{mpls_ldp_autoconfig='true'}">
+              <ldp>
+                <auto-config/>
+              </ldp>
+            </mpls>
           </ospf>
         </router>
       </config>

@@ -14,11 +14,11 @@ module router_ospf {
   }
 
   description
-    "Bla bla...";
+    "OSPF Routing Service with MPLS LDP Auto Config";
 
-  revision 2016-01-01 {
+  revision 2025-02-15 {
     description
-      "Initial revision.";
+      "Added MPLS LDP Auto Config Support.";
   }
 
   list router_ospf {
@@ -56,6 +56,11 @@ module router_ospf {
         type inet:ipv4-address;
         description "Router ID for OSPF";
         mandatory true;
+      }
+      leaf mpls_ldp_autoconfig {
+        type boolean;
+        description "Enable MPLS LDP Auto-Config for OSPF";
+        default false;
       }
       list networks {
         key network_address;
