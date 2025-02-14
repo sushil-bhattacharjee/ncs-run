@@ -59,23 +59,38 @@ module router_ospf {
       }
       list networks {
         key network_address;
-        description "List of OSPF network statements";
+        description "List of OSPF network statements-for-IOS";
 
         leaf network_address {
           type inet:ipv4-address;
-          description "Network IP Address";
+          description "Network IP Address-for IOS";
           mandatory true;
         }
 
         leaf wildcard_mask {
           type inet:ipv4-address;
-          description "Subnet Mask for the OSPF network";
+          description "Subnet Mask for the OSPF network-for-IOS";
           mandatory true;
         }
 
         leaf area {
           type uint32;
           description "OSPF Area ID";
+          mandatory true;
+        }
+      }
+      list interfaces {
+        key interface_name;
+        description "List of OSPF-enable interfaces-IOS-XR/XE";
+
+        leaf interface_name {
+          type string;
+          description "Interface name";
+          mandatory true;
+        }
+        leaf area {
+          type uint32;
+          description "OSPF Area ID for IOS-XR";
           mandatory true;
         }
       }

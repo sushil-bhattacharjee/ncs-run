@@ -19,7 +19,7 @@ class ServiceCallbacks(Service):
             # Apply OSPF base configuration
             template.apply('router_ospf-template', vars)
 
-            # Apply OSPF network statements
+            # Apply OSPF network statements only for IOS
             for net in device.networks:
                 net_vars = ncs.template.Variables()
                 net_vars.add("device_name_py", device.device_name)
@@ -27,14 +27,18 @@ class ServiceCallbacks(Service):
                 net_vars.add("network_address_py", net.network_address)
                 net_vars.add("wildcard_mask_py", net.wildcard_mask)
                 net_vars.add("area_py", net.area)
-
-                template.apply('router_ospf-network-template', net_vars)
+                template.apply('router_ospf-ios-network-template', net_vars)
+            # Apply OSPF interface configuration (Only for IOS-XR)
+            for intf in device.interfaces:
+                intf_vars = ncs.template.Variables()
+                intf_vars.add("device_name_py", device.device_name)
+                intf_vars.add("process_id_py", device.process_id)
+                intf_vars.add("interface_name_py", intf.interface_name)
+                intf_vars.add("area_py", intf.area)
+                template.apply("router_ospf-xr-interface-template", intf_vars)
+                # Apply OSPF interface type configuration for IOS
             self.log.info(f"Applied OSPF config to device {device.device_name}")
 
-
-# ---------------------------------------------
-# COMPONENT THREAD THAT WILL BE STARTED BY NCS.
-# ---------------------------------------------
 class ROUTER_OSPF(ncs.application.Application):
     def setup(self):
         self.log.info('ROUTER_OSPF RUNNING')

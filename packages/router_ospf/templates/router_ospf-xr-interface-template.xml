@@ -1,0 +1,20 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+    <devices xmlns="http://tail-f.com/ns/ncs">
+      <device tags="merge">
+        <name>{\$device_name_py}</name>
+        <config>
+          <router xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <ospf>
+              <name>{\$process_id_py}</name>
+              <area>
+                <id>{\$area_py}</id>
+                <interface>
+                  <name>{\$interface_name_py}</name>
+                </interface>
+              </area>
+            </ospf>
+          </router>
+        </config>
+      </device>
+    </devices>
+  </config-template>

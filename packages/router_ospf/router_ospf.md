@@ -1,37 +1,40 @@
-# Cisco NSO FASTMAP-Based OSPF Configuration Service
+# OSPF Configuration using FASTMAP in Cisco NSO
 
-## **Overview**
-This document describes the implementation of a **FASTMAP-based OSPF service** in Cisco NSO. The service allows users to configure OSPF settings dynamically on multiple devices, including process ID, router ID, and network statements.
+This document describes the implementation of OSPF configuration for IOS-XE and IOS-XR devices using Cisco NSO with FASTMAP. It includes the YANG model, Python service logic, XML templates, and instructions for deployment and testing.
 
-## **NSO Service Implementation**
+---
 
-### **1. YANG Data Model**
-The YANG model defines the service structure, specifying devices, OSPF process ID, router ID, and network configurations.
+## 1. **YANG Model: `router_ospf.yang`**
 
-#### **File: `router_ospf.yang`**
 ```yang
 module router_ospf {
 
   namespace "http://example.com/router_ospf";
   prefix router_ospf;
 
-  import ietf-inet-types { prefix inet; }
-  import tailf-common { prefix tailf; }
-  import tailf-ncs { prefix ncs; }
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
 
-  description "OSPF Configuration Service using FASTMAP";
+  description "OSPF Configuration using FASTMAP";
 
-  revision 2025-02-14 {
+  revision 2016-01-01 {
     description "Initial revision.";
   }
 
   list router_ospf {
+    description "OSPF configuration service";
     key name;
-    description "OSPF Service Instances";
 
     leaf name {
+      tailf:info "Unique service id";
       type string;
-      description "Service Instance Name";
     }
 
     uses ncs:service-data;
@@ -53,32 +56,49 @@ module router_ospf {
         description "OSPF Process ID";
         mandatory true;
       }
-      
+
       leaf router_id {
         type inet:ipv4-address;
-        description "OSPF Router ID";
+        description "Router ID for OSPF";
         mandatory true;
       }
-      
+
       list networks {
         key network_address;
-        description "List of OSPF Networks";
+        description "List of OSPF network statements for IOS";
 
         leaf network_address {
           type inet:ipv4-address;
-          description "Network IP Address";
+          description "Network IP Address for IOS";
           mandatory true;
         }
 
         leaf wildcard_mask {
           type inet:ipv4-address;
-          description "Wildcard Mask for the OSPF Network";
+          description "Subnet Mask for the OSPF network for IOS";
           mandatory true;
         }
 
         leaf area {
           type uint32;
           description "OSPF Area ID";
+          mandatory true;
+        }
+      }
+
+      list interfaces {
+        key interface_name;
+        description "List of OSPF-enabled interfaces for IOS-XR and IOS-XE";
+
+        leaf interface_name {
+          type string;
+          description "Interface name";
+          mandatory true;
+        }
+
+        leaf area {
+          type uint32;
+          description "OSPF Area ID for IOS-XR";
           mandatory true;
         }
       }
@@ -89,10 +109,8 @@ module router_ospf {
 
 ---
 
-### **2. NSO Python Service Logic**
-The Python script processes the input data and applies the **FASTMAP service template** for OSPF configuration.
+## 2. **Python Service Logic: `router_ospf.py`**
 
-#### **File: `router_ospf.py`**
 ```python
 # -*- mode: python; python-indent: 4 -*-
 import ncs
@@ -101,20 +119,18 @@ from ncs.application import Service
 class ServiceCallbacks(Service):
     @Service.create
     def cb_create(self, tctx, root, service, proplist):
-        self.log.info(f'Service create: {service._path}')
-        
+        self.log.info('Service create(service=', service._path, ')')
         template = ncs.template.Template(service)
-        
+
+        # Iterate over each device in the service
         for device in service.devices:
             vars = ncs.template.Variables()
             vars.add("device_name_py", device.device_name)
             vars.add("process_id_py", device.process_id)
             vars.add("router_id_py", device.router_id)
-            
-            # Apply base OSPF template
             template.apply('router_ospf-template', vars)
-            
-            # Apply network configurations
+
+            # Apply OSPF network statements (Only for IOS)
             for net in device.networks:
                 net_vars = ncs.template.Variables()
                 net_vars.add("device_name_py", device.device_name)
@@ -122,109 +138,81 @@ class ServiceCallbacks(Service):
                 net_vars.add("network_address_py", net.network_address)
                 net_vars.add("wildcard_mask_py", net.wildcard_mask)
                 net_vars.add("area_py", net.area)
-                
-                template.apply('router_ospf-network-template', net_vars)
-            
+                template.apply('router_ospf-ios-network-template', net_vars)
+
+            # Apply OSPF interfaces (Only for IOS-XR)
+            for intf in device.interfaces:
+                intf_vars = ncs.template.Variables()
+                intf_vars.add("device_name_py", device.device_name)
+                intf_vars.add("process_id_py", device.process_id)
+                intf_vars.add("interface_name_py", intf.interface_name)
+                intf_vars.add("area_py", intf.area)
+                template.apply("router_ospf-xr-interface-template", intf_vars)
             self.log.info(f"Applied OSPF config to device {device.device_name}")
 
 class ROUTER_OSPF(ncs.application.Application):
     def setup(self):
-        self.log.info('ROUTER_OSPF Service Running')
+        self.log.info('ROUTER_OSPF RUNNING')
         self.register_service('router_ospf-servicepoint', ServiceCallbacks)
-    
+
     def teardown(self):
-        self.log.info('ROUTER_OSPF Service Stopped')
+        self.log.info('ROUTER_OSPF FINISHED')
 ```
 
 ---
 
-### **3. XML Service Templates**
+## 3. **Building and Deploying the Package**
 
-#### **File: `router_ospf-template.xml`** (Base OSPF Configuration)
-```xml
-<config-template xmlns="http://tail-f.com/ns/config/1.0">
-  <devices xmlns="http://tail-f.com/ns/ncs">
-    <device>
-      <name>{\$device_name_py}</name>
-      <config>
-        <router xmlns="urn:ios">
-          <ospf>
-            <id>{\$process_id_py}</id>
-            <router-id>{\$router_id_py}</router-id>
-          </ospf>
-        </router>
-      </config>
-    </device>
-  </devices>
-</config-template>
-```
-
-#### **File: `router_ospf-network-template.xml`** (Network Configuration)
-```xml
-<config-template xmlns="http://tail-f.com/ns/config/1.0">
-  <devices xmlns="http://tail-f.com/ns/ncs">
-    <device>
-      <name>{\$device_name_py}</name>
-      <config>
-        <router xmlns="urn:ios">
-          <ospf>
-            <id>{\$process_id_py}</id>
-            <network>
-              <ip>{\$network_address_py}</ip>
-              <mask>{\$wildcard_mask_py}</mask>
-              <area>{\$area_py}</area>
-            </network>
-          </ospf>
-        </router>
-      </config>
-    </device>
-  </devices>
-</config-template>
-```
-
----
-
-## **4. Building and Deploying the NSO Package**
-
-### **Step 1: Navigate to Package Source Directory**
+### **Step 1: Build the Package**
 ```bash
-cd ~/ncs-run/packages/router_ospf/src
+cd ~/ncs-run/packages/router_ospf
+ncs-make-package --service-skeleton python-and-template --yang-model router_ospf
 ```
 
-### **Step 2: Build the Package**
+### **Step 2: Compile and Reload Packages**
 ```bash
-make all
+make clean all
+cd ~/ncs-run
+ncs --with-package-reload
 ```
 
-### **Step 3: Load or Reload the Package in NSO**
+### **Step 3: Deploy the Service**
 ```bash
-ncs_cli -C -u admin
 config
-packages package router_ospf reload
+packages reload
 commit
-exit
 ```
 
 ---
 
-## **5. NSO CLI Configuration Commands**
-To create an OSPF service instance for multiple devices:
+## 4. **Configuring OSPF in NSO CLI**
+
+### **For IOS-XE:**
 ```bash
 config
-router_ospf ospf_core
-  devices PE-53
-    process_id 65005
-    router_id 192.168.168.53
-    networks 192.168.53.0 wildcard_mask 0.0.0.255 area 0
-    networks 192.168.168.53 wildcard_mask 0.0.0.0 area 0
-  exit
+router_ospf ospf_config devices PE-51
+ process_id 65001
+ router_id 192.168.168.51
+ networks 192.168.51.0 wildcard_mask 0.0.0.255 area 0
+ networks 192.168.168.51 wildcard_mask 0.0.0.0 area 0
+commit
+```
+
+### **For IOS-XR:**
+```bash
+config
+router_ospf ospf_config devices P-60
+ process_id 65005
+ router_id 192.168.168.60
+ interfaces Loopback0 area 0
+ interfaces GigabitEthernet0/0/0/2 area 0
 commit
 ```
 
 ---
 
 ## **Conclusion**
-This FASTMAP-based **OSPF Service for NSO** automates OSPF configuration across multiple devices dynamically. It allows for flexible network statements while ensuring maintainability through **YANG**, **Python**, and **XML templates**.
+This NSO FASTMAP implementation efficiently configures OSPF for both IOS-XE and IOS-XR devices, leveraging templates for consistency. The solution allows seamless OSPF provisioning, modification, and deletion across multiple network devices.
 
-🚀 **NSO will now efficiently configure and manage OSPF across your network!** 🎯
+🚀 **Let me know if you need further refinements!**
 

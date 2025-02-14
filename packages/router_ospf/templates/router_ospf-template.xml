@@ -10,6 +10,13 @@
             <router-id>{\$router_id_py}</router-id>
           </ospf>
         </router>
+        <!-- IOS-XR Configuration -->
+        <router xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <ospf>
+            <name>{\$process_id_py}</name>
+            <router-id>{\$router_id_py}</router-id>
+          </ospf>
+        </router>
       </config>
     </device>
   </devices>
