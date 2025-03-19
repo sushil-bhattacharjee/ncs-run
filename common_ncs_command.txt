@@ -1,0 +1,41 @@
+sushil@Ubuntu24:~/ncs-run$ source $HOME/nso-6.3/ncsrc
+sushil@Ubuntu24:~/ncs-run$ ncs --status
+sushil@Ubuntu24:~/ncs-run$ ncs --stop
+sushil@Ubuntu24:~/ncs-run$ ncs --with-package-reload
+sushil@Ubuntu24:~/ncs-run$ ncs --status | grep 192.168.89.99
+sushil@Ubuntu24:~/ncs-run$ ncs --status | grep 127.0.0.1
+  sessionId=54 2025-03-19 23:59:31 system@127.0.0.1 system/tcp com.tailf.ncs.NcsMain.initJVM
+  sessionId=64 2025-03-19 23:59:41 system@127.0.0.1 system/system
+  sessionId=68 2025-03-19 23:59:41 system@127.0.0.1 system/system
+sushil@Ubuntu24:~/ncs-run$ netstat -tulnp | grep 8280
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+sushil@Ubuntu24:~/ncs-run$ netstat -tulnp | grep 9888
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 192.168.89.99:9888      0.0.0.0:*               LISTEN      248094/ncs.smp    
+
+admin@ncs# show devices list 
+NAME                ADDRESS                       DESCRIPTION                    NED ID                ADMIN STATE  
+------------------------------------------------------------------------------------------------------------------
+CE-61               10.1.10.61                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+CE-62               10.1.10.62                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+MI6-63              10.1.10.63                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+MI6-64              10.1.10.64                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+P-60                10.1.10.60                    Device created via YAML input  cisco-iosxr-cli-7.55  unlocked     
+PE-51               10.1.10.51                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+PE-52               10.1.10.52                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+PE-53               10.1.10.53                    Device created via YAML input  cisco-iosxr-cli-7.55  unlocked     
+PE-54               10.1.10.54                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+PE-56               10.1.10.56                    Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+R1                  10.1.10.11                    -                              cisco-ios-cli-6.106   unlocked     
+R2                  10.1.10.12                    -                              cisco-ios-cli-6.106   unlocked     
+R3                  10.1.10.13                    -                              cisco-ios-cli-6.106   unlocked     
+R4                  10.1.10.14                    -                              cisco-ios-cli-6.106   unlocked     
+R5                  10.1.10.15                    -                              cisco-ios-cli-6.106   unlocked     
+R6                  10.1.10.16                    -                              cisco-ios-cli-6.106   unlocked     
+SB-HOME             192.168.89.101                Device created via YAML input  cisco-ios-cli-6.106   unlocked     
+SW2NXOS             10.1.10.22                    -                              cisco-nx-cli-3.0      unlocked     
+XRV779K3R10         10.1.10.10                    -                              cisco-iosxr-cli-7.55  unlocked     
+devnetsandboxiosxe  devnetsandboxiosxe.cisco.com  -                              cisco-ios-cli-6.106   unlocked     
+admin@ncs#
