@@ -1,3 +1,27 @@
+##Check the current verison of device directly from the device instaed of CDB##
+admin@ncs# devices device PE-53 live-status exec show ver 
+result 
+Wed Feb 12 21:52:19.305 UTC
+Cisco IOS XR Software, Version 7.11.1
+Copyright (c) 2013-2023 by Cisco Systems, Inc.
+
+Build Information:
+ Built By     : deenayak
+ Built On     : Sun Dec  3 14:30:34 PST 2023
+ Built Host   : iox-ucs-043
+ Workspace    : /auto/srcarchive14/prod/7.11.1/xrv9k/ws
+ Version      : 7.11.1
+ Location     : /opt/cisco/XR/packages/
+ Label        : 7.11.1
+
+cisco IOS-XRv 9000 () processor
+System uptime is 10 hours 50 minutes
+
+RP/0/RP0/CPU0:PE-53#
+admin@ncs# devices device PE-53 live-status exec show run
+###########
+
+
 sushil@Ubuntu24:~/ncs-run$ source $HOME/nso-6.3/ncsrc
 sushil@Ubuntu24:~/ncs-run$ ncs --status
 sushil@Ubuntu24:~/ncs-run$ ncs --stop
@@ -15,6 +39,8 @@ sushil@Ubuntu24:~/ncs-run$ netstat -tulnp | grep 9888
  will not be shown, you would have to be root to see it all.)
 tcp        0      0 192.168.89.99:9888      0.0.0.0:*               LISTEN      248094/ncs.smp    
 
+
+##############
 admin@ncs# show devices list 
 NAME                ADDRESS                       DESCRIPTION                    NED ID                ADMIN STATE  
 ------------------------------------------------------------------------------------------------------------------
@@ -38,4 +64,65 @@ SB-HOME             192.168.89.101                Device created via YAML input 
 SW2NXOS             10.1.10.22                    -                              cisco-nx-cli-3.0      unlocked     
 XRV779K3R10         10.1.10.10                    -                              cisco-iosxr-cli-7.55  unlocked     
 devnetsandboxiosxe  devnetsandboxiosxe.cisco.com  -                              cisco-ios-cli-6.106   unlocked     
-admin@ncs#
+
+##################
+
+admin@ncs# show devices list | include cisco-iosxr-cli-7.55
+P-60                10.1.10.60                    Device created via YAML input  cisco-iosxr-cli-7.55  unlocked     
+PE-53               10.1.10.53                    Device created via YAML input  cisco-iosxr-cli-7.55  unlocked     
+XRV779K3R10         10.1.10.10                    -                              cisco-iosxr-cli-7.55  unlocked 
+
+########################
+
+admin@ncs# show running-config devices device R1 authgroup 
+devices device R1
+ authgroup CML2.8
+!
+
+
+#######################
+adding a device 
+
+admin@ncs(config)# devices device R3
+admin@ncs(config-device-R3)# add
+Possible completions:
+  add-capability   This action adds a capability to the list of capabilities.
+  address          IP address or host name for the management interface
+admin@ncs(config-device-R3)# address 10.1.10.13
+admin@ncs(config-device-R3)# port ?
+Description: Port for the management interface
+Possible completions:
+  <unsignedShort, 0 .. 65535>
+admin@ncs(config-device-R3)# port 22
+admin@ncs(config-device-R3)# exit 
+admin@ncs(config)# devices device R3
+admin@ncs(config-device-R3)# authgroup CML2.8 
+admin@ncs(config-device-R3)# device-type cli ned-id cisco-ios-cli-6.106 
+admin@ncs(config-device-R3)# state admin-state unlocked 
+admin@ncs(config-device-R3)# top
+admin@ncs(config)# commit dry-run 
+cli {
+    local-node {
+        data  devices {
+             +    device R3 {
+             +        address 10.1.10.13;
+             +        port 22;
+             +        authgroup CML2.8;
+             +        device-type {
+             +            cli {
+             +                ned-id cisco-ios-cli-6.106;
+             +            }
+             +        }
+             +        state {
+             +            admin-state unlocked;
+             +        }
+             +    }
+              }
+    }
+}
+admin@ncs(config)# commit
+Commit complete.
+admin@ncs(config)# devices device R3 sync-from 
+result true
+
+#################
