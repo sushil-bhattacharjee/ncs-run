@@ -126,3 +126,18 @@ admin@ncs(config)# devices device R3 sync-from
 result true
 
 #################
+Create a user using cisco NSO cli 
+admin@ncs(config)# aaa authentication users user sushil password sushil
+Value for 'uid' (<int>): 
+Error: bad value: "" is not a valid value.
+Value for 'uid' (<int>): 1001
+Value for 'gid' (<int>): 1001
+Value for 'ssh_keydir' (<string>): 
+Value for 'homedir' (<string>): 
+admin@ncs(config-user-sushil)# commit
+Commit complete.
+admin@ncs(config-user-sushil)# 
+**If you're not planning to use SSH keys for this NSO user, you can just press Enter to skip it.
+**You can press Enter again for homedir too, unless you're setting a custom shell/home directory for the user.
+**aaa authentication groups group admin gid 1001 
+#Then assign that gid to your user sushil so they belong to the admin group.
