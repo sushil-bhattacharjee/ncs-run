@@ -141,3 +141,44 @@ admin@ncs(config-user-sushil)#
 **You can press Enter again for homedir too, unless you're setting a custom shell/home directory for the user.
 **aaa authentication groups group admin gid 1001 
 #Then assign that gid to your user sushil so they belong to the admin group.
+
+############ Rollback configuration #############
+
+admin@ncs# show configuration commit list 
+2025-04-04 09:54:13
+SNo.  ID       User       Client      Time Stamp          Label       Comment
+~~~~  ~~       ~~~~       ~~~~~~      ~~~~~~~~~~          ~~~~~       ~~~~~~~
+10712 10712    admin      cli         2025-04-04 09:48:05             
+10711 10711    admin      cli         2025-04-04 09:45:13             
+10710 10710    admin      cli         2025-03-24 21:36:15             
+10709 10709    admin      cli         2025-03-24 00:39:55             
+
+admin@ncs# show configuration commit changes 10712
+!
+! Created by: admin
+! Date: 2025-04-04 09:48:05
+! Client: cli
+!
+no aaa authentication users user mi6
+
+admin@ncs(config)# rollback selective 10712
+admin@ncs(config)# commit dry-run 
+cli {
+    local-node {
+        data  aaa {
+                  authentication {
+                      users {
+             +            user mi6 {
+             +                uid 1001;
+             +                gid 1001;
+             +                password $6$Kj8DLGT.BeB5x6tG$yCgtMREguMJmwsVvyZr257OLMHdyM7Wf6EBY6SU0ghw6TUF6V25tWUA.rJh6TnXi7UJwANb7fm2gJJUAlrNEG0;
+             +                ssh_keydir "";
+             +                homedir "";
+             +            }
+                      }
+                  }
+              }
+    }
+}
+admin@ncs(config)# commit
+Commit complete.
